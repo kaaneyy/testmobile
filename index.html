@@ -3,232 +3,1067 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <title>Pawn & Play - iPhone Landscape Demo</title>
+  <title>Pawn & Pick Guitars - iOS Store Redesign</title>
   <style>
     :root{
-      --ink:#253047;
-      --muted:#71809a;
-      --cream:#fffaf4;
-      --paper:rgba(255,255,255,.72);
-      --paperSolid:#fff9f3;
-      --line:rgba(102,122,150,.22);
-      --shadow:0 22px 60px rgba(68,70,92,.18);
-      --pink:#ffd9e5;
-      --peach:#ffe2c8;
-      --mint:#d8f8e6;
-      --sky:#d8ecff;
-      --lav:#e8ddff;
-      --butter:#fff2bd;
-      --coral:#ff8b9e;
-      --blue:#6e9ffb;
-      --green:#65cfa2;
-      --safeTop:env(safe-area-inset-top,0px);
-      --safeBottom:env(safe-area-inset-bottom,0px);
-      --safeLeft:env(safe-area-inset-left,0px);
-      --safeRight:env(safe-area-inset-right,0px);
+      color-scheme: dark;
+      --ink:#fff8ea;
+      --muted:#d0c6b5;
+      --sub:#9b8f82;
+      --gold:#ffd36a;
+      --gold2:#ffb044;
+      --cash:#79f2a7;
+      --blue:#6fd6ff;
+      --red:#ff786f;
+      --purple:#b69aff;
+      --wood:#6a3d21;
+      --wood2:#b36a34;
+      --leather:#251810;
+      --bg:#07090e;
+      --line:rgba(255,255,255,.16);
+      --hair:rgba(255,255,255,.09);
+      --glass:rgba(42,32,24,.58);
+      --glass2:rgba(17,19,24,.74);
+      --blur: blur(22px) saturate(1.25);
+      --shadow: 0 24px 80px rgba(0,0,0,.52);
+      --safeBottom: env(safe-area-inset-bottom, 0px);
+      --safeTop: env(safe-area-inset-top, 0px);
     }
+
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html,body{height:100%;margin:0;overflow:hidden;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Inter,system-ui,sans-serif;background:linear-gradient(140deg,#f9ebff 0%,#e8f4ff 45%,#fff1df 100%)}
-    button{font:inherit;color:inherit;border:0;cursor:pointer;user-select:none}
-    #game{position:fixed;inset:0;overflow:hidden;background:
-      radial-gradient(circle at 18% 18%,rgba(255,255,255,.9),rgba(255,255,255,0) 28%),
-      radial-gradient(circle at 90% 12%,rgba(255,220,232,.8),rgba(255,255,255,0) 34%),
-      linear-gradient(135deg,#f7e9ff 0%,#e6f5ff 48%,#fff1de 100%)}
-    #worldWrap{position:absolute;inset:0;display:grid;place-items:center;padding:calc(70px + var(--safeTop)) calc(14px + var(--safeRight)) calc(92px + var(--safeBottom)) calc(14px + var(--safeLeft))}
-    #world{width:100%;height:100%;max-width:177.78vh;max-height:56.25vw;aspect-ratio:16/9;border-radius:30px;background:#f7efe8;box-shadow:var(--shadow),inset 0 0 0 1px rgba(255,255,255,.65);touch-action:none}
-    .glass{background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.54));border:1px solid rgba(255,255,255,.75);box-shadow:0 18px 45px rgba(78,86,118,.14), inset 0 1px 0 rgba(255,255,255,.8);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
-    #topHud{position:absolute;z-index:20;left:calc(12px + var(--safeLeft));right:calc(74px + var(--safeRight));top:calc(10px + var(--safeTop));height:58px;display:flex;gap:8px;align-items:stretch;pointer-events:none}
-    .brand{min-width:180px;display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:20px;pointer-events:auto}.brandIcon{width:38px;height:38px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#fff4bd,#ffd6e4);border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 -4px 10px rgba(236,152,105,.18);font-size:21px;font-weight:950}.brandTitle{font-weight:950;letter-spacing:-.03em;line-height:1}.brandSub{font-size:11px;color:var(--muted);font-weight:750;margin-top:3px;white-space:nowrap}
-    .pill{min-width:76px;flex:0 1 128px;border-radius:20px;padding:8px 11px;pointer-events:auto;overflow:hidden}.pill small{display:block;color:var(--muted);font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}.pill b{display:block;font-size:18px;letter-spacing:-.02em;margin-top:2px;white-space:nowrap}.pill .bar{height:5px;border-radius:99px;background:rgba(37,48,71,.09);margin-top:5px;overflow:hidden}.pill .fill{height:100%;width:0;background:linear-gradient(90deg,#8edcc2,#7fb1ff,#ffc6d3);border-radius:inherit}
-    #menuBtn{position:absolute;z-index:40;right:calc(12px + var(--safeRight));top:calc(10px + var(--safeTop));width:54px;height:54px;border-radius:20px;display:grid;place-items:center}.hamb{width:23px;height:17px;display:grid;gap:5px}.hamb i{display:block;height:3px;border-radius:99px;background:var(--ink)}
-    #objective{position:absolute;z-index:18;left:50%;top:calc(76px + var(--safeTop));transform:translateX(-50%);min-width:min(540px,70vw);max-width:72vw;border-radius:22px;padding:10px 14px;text-align:center;font-weight:850;pointer-events:none}.objectiveTop{font-size:11px;color:var(--muted);font-weight:950;text-transform:uppercase;letter-spacing:.08em}.objectiveText{font-size:14px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    #bottomPanel{position:absolute;z-index:22;left:50%;bottom:calc(13px + var(--safeBottom));transform:translateX(-50%);width:min(520px,42vw);border-radius:26px;padding:10px 12px;pointer-events:none}.progressTitle{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:900;color:var(--muted)}.progressOuter{height:12px;background:rgba(37,48,71,.09);border-radius:999px;overflow:hidden;margin-top:7px}.progressFill{height:100%;width:0;background:linear-gradient(90deg,#a1d9ff,#c8f4d8,#ffe1ab,#ffc6d4);border-radius:inherit}.prompt{font-size:13px;font-weight:850;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    #controls{position:absolute;z-index:30;left:0;right:0;bottom:calc(18px + var(--safeBottom));display:flex;justify-content:space-between;align-items:flex-end;padding:0 calc(28px + var(--safeRight)) 0 calc(28px + var(--safeLeft));pointer-events:none}.controlZone{pointer-events:auto;touch-action:none}#stick{width:132px;height:132px;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.82),rgba(255,255,255,.38));border:1px solid rgba(255,255,255,.85);box-shadow:0 18px 42px rgba(96,107,140,.2),inset 0 0 0 8px rgba(255,255,255,.22);position:relative}#stick::after{content:"";position:absolute;inset:28px;border-radius:50%;border:1px dashed rgba(37,48,71,.18)}#knob{position:absolute;left:50%;top:50%;width:54px;height:54px;border-radius:50%;transform:translate(-50%,-50%);background:linear-gradient(180deg,#fff,#d8ecff);border:1px solid rgba(255,255,255,.9);box-shadow:0 12px 24px rgba(65,88,142,.22),inset 0 -5px 12px rgba(112,159,219,.18)}#actionBtn{width:112px;height:112px;border-radius:50%;background:linear-gradient(180deg,#ffffff,#e4efff);border:1px solid rgba(255,255,255,.95);box-shadow:0 18px 44px rgba(94,113,160,.22),inset 0 -7px 18px rgba(108,154,225,.18);font-weight:950;letter-spacing:.02em}#actionBtn span{display:block;font-size:11px;color:var(--muted);margin-top:4px;font-weight:850}
-    #toast{position:absolute;z-index:120;left:50%;top:calc(18px + var(--safeTop));transform:translateX(-50%);max-width:min(660px,86vw);padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.95);box-shadow:0 15px 40px rgba(78,86,118,.18);font-weight:850;display:none;text-align:center}
-    #drawerShade{position:absolute;z-index:70;inset:0;background:rgba(72,72,90,.18);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:.2s}#drawerShade.open{opacity:1;pointer-events:auto}#drawer{position:absolute;z-index:80;right:calc(10px + var(--safeRight));top:calc(10px + var(--safeTop));bottom:calc(10px + var(--safeBottom));width:min(392px,88vw);border-radius:30px;padding:14px;display:flex;flex-direction:column;gap:12px;transform:translateX(calc(100% + 28px));transition:transform .24s cubic-bezier(.2,.8,.2,1)}#drawer.open{transform:translateX(0)}.drawerHead{display:flex;align-items:center;justify-content:space-between;gap:10px}.drawerHead h2{font-size:22px;margin:0;letter-spacing:-.03em}.drawerHead p{margin:2px 0 0;color:var(--muted);font-size:12px;font-weight:750}.xBtn{width:42px;height:42px;border-radius:16px;background:rgba(37,48,71,.06);font-weight:950}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.tab{height:38px;border-radius:14px;background:rgba(37,48,71,.06);font-size:12px;font-weight:900;color:var(--muted)}.tab.active{background:linear-gradient(180deg,#fff,#edf5ff);color:var(--ink);box-shadow:inset 0 0 0 1px rgba(255,255,255,.75)}#drawerBody{overflow:auto;min-height:0;padding-right:3px;display:flex;flex-direction:column;gap:10px}#drawerBody::-webkit-scrollbar{width:7px}#drawerBody::-webkit-scrollbar-thumb{background:rgba(37,48,71,.2);border-radius:999px}.card{border-radius:22px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.75);padding:12px}.cardTitle{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:950}.cardTitle small{font-size:11px;color:var(--muted);font-weight:850}.orderCard{display:grid;gap:8px}.orderTop{display:flex;justify-content:space-between;gap:10px}.orderName{font-weight:950}.orderMeta{font-size:12px;color:var(--muted);font-weight:750;line-height:1.35}.chips{display:flex;gap:5px;flex-wrap:wrap}.chip{font-size:11px;font-weight:900;border-radius:999px;padding:4px 8px;background:rgba(37,48,71,.06);color:var(--muted)}.chip.done{background:rgba(101,207,162,.18);color:#3d9674;text-decoration:line-through}.chip.next{background:rgba(255,225,171,.65);color:#8c6530}.pat{height:7px;border-radius:999px;background:rgba(37,48,71,.08);overflow:hidden}.pat div{height:100%;border-radius:inherit;background:linear-gradient(90deg,#ff9aac,#ffd889,#99dfbb)}.btnGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.buyBtn{min-height:62px;border-radius:18px;text-align:left;padding:10px;background:linear-gradient(180deg,#fff,#f6fbff);box-shadow:inset 0 0 0 1px rgba(255,255,255,.85);font-weight:950}.buyBtn span{display:block;color:var(--muted);font-size:11px;line-height:1.25;font-weight:800;margin-top:4px}.buyBtn.locked{opacity:.45;filter:grayscale(.25)}.buyBtn.good{background:linear-gradient(180deg,#f4fff9,#e3f9ed)}.miniNote{font-size:12px;color:var(--muted);font-weight:750;line-height:1.4}.staffLine{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:12px;font-weight:850}.statusDot{width:9px;height:9px;border-radius:50%;background:#a0d8ff;box-shadow:0 0 0 5px rgba(160,216,255,.18)}
-    #modal{position:absolute;z-index:160;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.7),rgba(252,241,255,.66) 35%,rgba(90,88,112,.2));padding:22px}#modal.hidden{display:none}.modalPanel{width:min(760px,92vw);border-radius:34px;padding:22px}.modalPanel h1{font-size:40px;line-height:.95;margin:0 0 10px;letter-spacing:-.05em}.modalPanel p{color:var(--muted);line-height:1.45;font-weight:750;margin:0}.modalGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0}.miniFeature{border-radius:22px;padding:13px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.75)}.miniFeature b{display:block;margin-bottom:5px}.modalActions{display:flex;gap:10px;flex-wrap:wrap}.primary,.secondary{border-radius:18px;padding:13px 16px;font-weight:950}.primary{background:linear-gradient(180deg,#253047,#3a4966);color:white}.secondary{background:rgba(37,48,71,.07)}
-    #rotateNotice{display:none;position:absolute;z-index:240;inset:0;background:linear-gradient(135deg,#fff1f7,#e9f5ff);place-items:center;text-align:center;padding:32px}.rotateBox{max-width:360px}.rotatePhone{width:100px;height:160px;border:7px solid var(--ink);border-radius:26px;margin:0 auto 18px;position:relative;transform:rotate(90deg);opacity:.8}.rotatePhone:after{content:"";position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:34px;height:4px;border-radius:999px;background:var(--ink)}
-    @media (max-height:560px){#worldWrap{padding-top:calc(62px + var(--safeTop));padding-bottom:calc(72px + var(--safeBottom))}#topHud{height:50px}.brand{min-width:150px;border-radius:17px}.brandIcon{width:32px;height:32px;border-radius:12px}.brandSub{display:none}.pill{min-width:64px;border-radius:17px;padding:6px 9px}.pill b{font-size:16px}.hideShort{display:none}.objectiveText{font-size:12px}#objective{top:calc(64px + var(--safeTop));padding:8px 12px}#bottomPanel{width:min(470px,40vw);padding:8px 10px}#stick{width:112px;height:112px}#actionBtn{width:96px;height:96px}.modalPanel h1{font-size:32px}.modalGrid{grid-template-columns:1fr 1fr}.miniFeature:last-child{display:none}}
-    @media (max-width:840px){.hideNarrow{display:none}.brand{min-width:132px}.brandTitle{font-size:14px}.pill{flex:1 1 80px}.modalGrid{grid-template-columns:1fr}.btnGrid{grid-template-columns:1fr}}
-    @media (orientation:portrait) and (max-width:900px){#rotateNotice{display:grid}}
+    html,body{height:100%;margin:0;overflow:hidden;background:#050609;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Inter,system-ui,sans-serif}
+    body::before{
+      content:"";
+      position:fixed;inset:-25%;
+      background:
+        radial-gradient(circle at 20% 16%,rgba(255,175,68,.24),transparent 30%),
+        radial-gradient(circle at 78% 18%,rgba(91,232,155,.16),transparent 32%),
+        radial-gradient(circle at 55% 82%,rgba(111,214,255,.13),transparent 34%),
+        linear-gradient(135deg,#101217,#060709 55%,#0c100e);
+      filter:saturate(1.2);
+    }
+    button{font:inherit;color:inherit}
+    #app{position:fixed;inset:0;display:grid;place-items:center;padding:max(10px,var(--safeTop)) 10px max(10px,var(--safeBottom));}
+
+    #phone{
+      position:relative;
+      width:min(100vw,1548px);
+      height:min(100dvh,892px);
+      border-radius:44px;
+      padding:14px;
+      background:linear-gradient(145deg,#0c0d0f,#23201d 48%,#07080a);
+      border:1px solid rgba(255,255,255,.24);
+      box-shadow:0 44px 120px rgba(0,0,0,.68), inset 0 0 0 2px rgba(255,255,255,.08), inset 0 0 38px rgba(255,202,115,.06);
+      overflow:hidden;
+    }
+    #phone::before{
+      content:"";
+      position:absolute;left:50%;top:8px;transform:translateX(-50%);
+      width:260px;height:24px;border-radius:0 0 20px 20px;
+      background:#030405;
+      box-shadow:inset 0 -1px 0 rgba(255,255,255,.08);
+      z-index:20;
+      opacity:.96;
+    }
+    #screen{
+      position:absolute;inset:14px;border-radius:34px;overflow:hidden;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.08),transparent 14%),
+        radial-gradient(circle at 50% 36%,rgba(255,202,115,.16),transparent 42%),
+        #0b0d10;
+    }
+
+    #shell{
+      position:absolute;inset:0;
+      display:grid;
+      grid-template-columns: 286px minmax(0,1fr) 318px;
+      grid-template-rows: 98px minmax(0,1fr) 122px;
+      grid-template-areas:
+        "top top top"
+        "left store right"
+        "bottom bottom bottom";
+      gap:12px;
+      padding:18px 18px 18px;
+    }
+
+    .glass{
+      background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.07));
+      border:1px solid rgba(255,255,255,.17);
+      box-shadow:0 16px 44px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.22);
+      backdrop-filter:var(--blur);
+      -webkit-backdrop-filter:var(--blur);
+    }
+    .softCard{
+      border-radius:26px;
+      background:linear-gradient(180deg,rgba(34,27,22,.83),rgba(16,16,19,.75));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 20px 48px rgba(0,0,0,.28);
+    }
+
+    #topBar{grid-area:top;display:grid;grid-template-columns:1.15fr repeat(5,minmax(116px,.48fr));gap:10px;min-width:0}
+    .brand{
+      display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:26px;min-width:0;
+      background:
+        linear-gradient(180deg,rgba(83,48,23,.78),rgba(25,17,12,.8)),
+        radial-gradient(circle at 18% 22%,rgba(255,211,106,.2),transparent 38%);
+    }
+    .appIcon{
+      width:58px;height:58px;border-radius:18px;display:grid;place-items:center;flex:0 0 auto;
+      background:linear-gradient(145deg,#ffce67,#d26b27 56%,#7d3918);
+      border:1px solid rgba(255,255,255,.28);
+      box-shadow:0 12px 24px rgba(0,0,0,.3), inset 0 -8px 15px rgba(72,26,0,.24);
+      font-size:31px;
+    }
+    .brand h1{font-family:Georgia,serif;margin:0;font-size:26px;line-height:.98;letter-spacing:.02em;text-shadow:0 3px 0 #4b2a10;color:#ffd777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .brand small{display:block;margin-top:5px;color:#ffe7bd;font-weight:850;font-size:12px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    .metric{border-radius:24px;padding:11px 12px;min-width:0;overflow:hidden}
+    .metric .label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:950;color:rgba(255,248,234,.68);white-space:nowrap}
+    .metric .value{font-size:27px;font-weight:1000;line-height:1;margin-top:6px;text-shadow:0 2px 0 rgba(0,0,0,.36);white-space:nowrap}
+    .metric .bar{height:7px;border-radius:999px;background:rgba(0,0,0,.38);margin-top:10px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+    .metric .fill{height:100%;width:50%;border-radius:999px;background:linear-gradient(90deg,var(--cash),var(--gold))}
+    .segPill{display:inline-flex;align-items:center;gap:5px;max-width:100%;padding:3px 7px;border-radius:999px;background:rgba(255,211,106,.14);color:#ffecb5;border:1px solid rgba(255,211,106,.24);font-size:10px;font-weight:1000;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    #leftRail{grid-area:left;display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden}
+    #rightRail{grid-area:right;display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden}
+    .panel{padding:13px;border-radius:28px;min-height:0;overflow:hidden}
+    .panelHeader{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .panelTitle{font-size:15px;font-weight:1000;letter-spacing:.01em}
+    .pill{border-radius:999px;padding:5px 8px;font-size:11px;font-weight:1000;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.09);color:#fff2d3;white-space:nowrap}
+    .scroll{overflow:auto;min-height:0;padding-right:3px}
+    .scroll::-webkit-scrollbar{width:6px}
+    .scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:999px}
+
+    #loopPanel{flex:0 0 auto}
+    .loopChain{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+    .loopStep{
+      position:relative;min-height:72px;border-radius:19px;padding:8px 6px;text-align:center;
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+      transition:.25s transform,.25s border-color,.25s background;
+    }
+    .loopStep.active{transform:translateY(-2px);border-color:rgba(255,211,106,.75);background:rgba(255,211,106,.18);box-shadow:0 10px 24px rgba(255,176,68,.08)}
+    .loopStep.done{border-color:rgba(121,242,167,.46);background:rgba(121,242,167,.1)}
+    .loopIcon{font-size:23px;line-height:1}
+    .loopLabel{font-size:10px;font-weight:950;line-height:1.1;margin-top:5px;color:#fff7df}
+
+    #customersPanel{flex:1 1 auto;display:flex;flex-direction:column}
+    .customerCard{
+      position:relative;padding:10px;border-radius:22px;margin-bottom:8px;
+      background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.045));
+      border:1px solid rgba(255,255,255,.1);overflow:hidden;
+    }
+    .customerCard.active{border-color:rgba(255,211,106,.62);box-shadow:inset 0 0 0 1px rgba(255,211,106,.16)}
+    .customerTop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .avatarWrap{display:flex;gap:8px;align-items:center;min-width:0}
+    .avatar{width:36px;height:36px;border-radius:14px;background:rgba(0,0,0,.25);display:grid;place-items:center;border:1px solid rgba(255,255,255,.11);font-size:22px;flex:0 0 auto}
+    .custName{font-size:13px;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:162px}
+    .custWant{font-size:11px;color:#d6ccbd;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:162px}
+    .waitNum{font-size:18px;font-weight:1000;color:#fff2cd}
+    .placeLine{font-size:11px;color:#beae9c;margin-top:7px;display:flex;align-items:center;gap:6px}
+    .patience{height:7px;background:rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.08);border-radius:999px;margin-top:8px;overflow:hidden}
+    .patience div{height:100%;border-radius:999px;background:linear-gradient(90deg,#ff756f,#ffd36a,#79f2a7);width:80%}
+    .empty{padding:12px;border-radius:22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);font-size:13px;line-height:1.34;color:#dccfbd}
+
+    #storeWrap{grid-area:store;position:relative;min-width:0;min-height:0;border-radius:32px;overflow:hidden}
+    #storeWrap::before{
+      content:"";
+      position:absolute;inset:0;
+      background:radial-gradient(circle at 52% 33%,rgba(255,203,105,.23),transparent 35%),linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
+      pointer-events:none;z-index:2;
+    }
+    #storeCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;background:#20160f;touch-action:none}
+    .storeBadge{
+      position:absolute;z-index:4;left:16px;top:16px;display:flex;align-items:center;gap:8px;
+      padding:9px 11px;border-radius:999px;background:rgba(12,13,15,.66);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 10px 26px rgba(0,0,0,.24);font-size:12px;font-weight:1000;color:#fff4d7;
+    }
+    .floatingHint{
+      position:absolute;left:50%;bottom:15px;transform:translateX(-50%);
+      z-index:5;padding:10px 14px;border-radius:999px;background:rgba(12,13,15,.7);
+      border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(18px);
+      font-size:13px;font-weight:900;box-shadow:0 14px 34px rgba(0,0,0,.35);text-align:center;
+      max-width:calc(100% - 30px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .tryMeter{
+      position:absolute;right:16px;top:16px;z-index:4;width:210px;border-radius:24px;padding:11px;
+      background:rgba(20,20,22,.7);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.14);box-shadow:0 14px 34px rgba(0,0,0,.28)
+    }
+    .tryMeter b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#fff0c5}
+    .tryMeter span{font-size:11px;color:#d2c6b6}
+    .tryBar{height:9px;border-radius:999px;background:rgba(0,0,0,.38);overflow:hidden;margin-top:8px;border:1px solid rgba(255,255,255,.09)}
+    .tryBar div{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#6fd6ff,#79f2a7,#ffd36a);transition:width .15s linear}
+
+    #rightRail .panel{flex:0 0 auto}
+    .currentItem{display:grid;grid-template-columns:58px 1fr;gap:10px;align-items:center}
+    .itemIcon{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(145deg,#ffe4a8,#c46c2d);font-size:32px;border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 -8px 14px rgba(86,33,0,.19)}
+    .currentItem h3{font-size:15px;margin:0;font-weight:1000}
+    .currentItem p{font-size:12px;margin:4px 0 0;color:#d7c9b7;line-height:1.3}
+
+    .actionStack{display:grid;gap:8px}
+    .actionBtn{
+      position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:60px;padding:10px 12px;border:1px solid rgba(255,255,255,.13);
+      border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.06));cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.14);text-align:left;overflow:hidden;
+    }
+    .actionBtn.primary{background:linear-gradient(180deg,#ffd975,#e78c32);color:#271406;border-color:rgba(255,255,255,.28);box-shadow:0 12px 28px rgba(255,169,56,.18), inset 0 1px 0 rgba(255,255,255,.28)}
+    .actionBtn.good{background:linear-gradient(180deg,rgba(121,242,167,.24),rgba(121,242,167,.09));border-color:rgba(121,242,167,.34)}
+    .actionBtn[disabled]{opacity:.46;filter:grayscale(.55);cursor:not-allowed}
+    .actionBtn:active:not([disabled]){transform:translateY(1px)}
+    .actionMain{min-width:0}
+    .actionTitle{font-size:14px;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .actionSub{font-size:11px;margin-top:3px;color:rgba(255,248,234,.72);line-height:1.22}
+    .primary .actionSub{color:rgba(39,20,6,.72)}
+    .cost{font-size:13px;font-weight:1000;color:#ffeec6;white-space:nowrap}.primary .cost{color:#3d2109}
+    .smallText{font-size:12px;line-height:1.35;color:#cfbfad;margin-top:8px}
+
+    #upgradesPanel{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
+    .upgradeGrid{display:grid;grid-template-columns:1fr;gap:8px;overflow:auto;min-height:0;padding-right:3px}
+
+    #bottomBar{grid-area:bottom;display:grid;grid-template-columns:1.08fr 1.2fr .86fr;gap:12px;min-height:0}
+    .bottomCard{border-radius:28px;padding:13px 14px;overflow:hidden}
+    .bottomTitle{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:#ffe3a0;font-weight:1000}
+    .bottomCopy{font-size:13px;line-height:1.33;color:#e6d7c7;margin-top:6px}
+    .tabs{display:flex;gap:8px}
+    .tab{flex:1;min-height:62px;border-radius:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.11);display:grid;place-items:center;text-align:center;font-size:12px;font-weight:1000;color:#fff4d5}
+    .tab b{display:block;font-size:20px;margin-bottom:2px}
+
+    #toast{
+      position:absolute;left:50%;top:116px;transform:translateX(-50%);z-index:99;display:none;
+      max-width:min(620px,86vw);padding:12px 18px;border-radius:999px;background:rgba(10,11,13,.78);
+      border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(18px);box-shadow:0 18px 50px rgba(0,0,0,.38);
+      font-size:14px;font-weight:950;text-align:center;
+    }
+
+    @media(max-width:1100px),(pointer:coarse){
+      #phone{width:100vw;height:100dvh;border-radius:0;padding:0}
+      #phone::before{height:0}
+      #screen{inset:0;border-radius:0}
+      #shell{grid-template-columns:minmax(230px,.7fr) minmax(0,1fr);grid-template-rows:84px minmax(0,1fr) 188px;grid-template-areas:"top top" "store store" "left right";gap:8px;padding:8px}
+      #topBar{grid-template-columns:1fr repeat(3,minmax(88px,.34fr))}
+      #topBar .hideTablet{display:none}
+      .brand h1{font-size:20px}.brand small{display:none}.appIcon{width:48px;height:48px}
+      .metric .value{font-size:21px}.metric{border-radius:20px;padding:9px}
+      #loopPanel{display:none}
+      #customersPanel,#upgradesPanel{height:100%}
+      #bottomBar{display:none}
+      .tryMeter{width:180px}
+    }
+    @media(max-width:760px){
+      #shell{grid-template-columns:1fr;grid-template-rows:76px minmax(0,1fr) 196px;grid-template-areas:"top" "store" "right";padding:7px}
+      #leftRail{display:none}
+      #topBar{grid-template-columns:1fr repeat(2,82px)}
+      #topBar .hideMobile{display:none}
+      #rightRail{display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow:hidden}
+      #inventoryPanel,#actionsPanel,#upgradesPanel{min-height:0}
+      #upgradesPanel{display:none}
+      .brand{padding:8px}.brand h1{font-size:17px}.appIcon{width:42px;height:42px;border-radius:15px}
+      .metric{padding:8px}.metric .value{font-size:18px}.metric .bar{display:none}
+      .tryMeter{display:none}
+      .floatingHint{font-size:12px;padding:9px 11px}
+      .panel{padding:10px;border-radius:22px}
+      .currentItem{grid-template-columns:44px 1fr}.itemIcon{width:44px;height:44px;font-size:26px;border-radius:16px}
+      .actionBtn{min-height:50px;border-radius:18px;padding:8px}
+      .actionTitle{font-size:12px}.actionSub,.smallText{font-size:10px}
+    }
   </style>
 </head>
 <body>
-<div id="game">
-  <div id="worldWrap"><canvas id="world" width="1600" height="900"></canvas></div>
-  <div id="topHud">
-    <div class="glass brand"><div class="brandIcon">P</div><div><div class="brandTitle">Pawn & Play</div><div class="brandSub">soft iOS shop sim demo</div></div></div>
-    <div class="glass pill"><small>Cash</small><b id="cashText">$0</b><div class="bar"><div class="fill" id="cashFill"></div></div></div>
-    <div class="glass pill"><small>Day</small><b id="dayText">1</b><div class="bar"><div class="fill" id="dayFill"></div></div></div>
-    <div class="glass pill"><small>Shift</small><b id="timeText">0:00</b><div class="bar"><div class="fill" id="timeFill"></div></div></div>
-    <div class="glass pill hideNarrow"><small>Orders</small><b id="orderText">0</b><div class="bar"><div class="fill" id="orderFill"></div></div></div>
-    <div class="glass pill hideShort"><small>Staff</small><b id="staffText">1</b><div class="bar"><div class="fill" id="staffFill"></div></div></div>
+<div id="app">
+  <div id="phone">
+    <div id="screen">
+      <div id="shell">
+        <header id="topBar">
+          <div class="brand glass">
+            <div class="appIcon">🎸</div>
+            <div style="min-width:0">
+              <h1>Pawn & Pick</h1>
+              <small>Guitars · Gear · Prestige</small>
+            </div>
+          </div>
+          <div class="metric glass"><div class="label">Cash</div><div class="value" id="cashText">$256</div><div class="bar"><div class="fill" id="cashFill"></div></div></div>
+          <div class="metric glass"><div class="label">Prestige</div><div class="value" id="prestigeText">0</div><div class="bar"><div class="fill" id="prestigeFill"></div></div></div>
+          <div class="metric glass"><div class="label">Segment</div><div class="value" id="segmentText" style="font-size:18px;margin-top:8px">Walk-in</div><div style="margin-top:8px"><span class="segPill" id="segmentPill">starter</span></div></div>
+          <div class="metric glass hideMobile"><div class="label">Customers</div><div class="value" id="customerCount">0/4</div><div class="bar"><div class="fill" id="customerFill"></div></div></div>
+          <div class="metric glass hideTablet"><div class="label">Day</div><div class="value" id="dayText">7</div><div class="bar"><div class="fill" id="dayFill"></div></div></div>
+        </header>
+
+        <aside id="leftRail">
+          <section id="loopPanel" class="panel glass">
+            <div class="panelHeader">
+              <div class="panelTitle">Core Loop</div><div class="pill">tap actions</div>
+            </div>
+            <div class="loopChain" id="loopChain"></div>
+          </section>
+          <section id="customersPanel" class="panel glass">
+            <div class="panelHeader">
+              <div class="panelTitle">Customers waiting around store</div><div class="pill" id="waitPill">random</div>
+            </div>
+            <div class="scroll" id="customersList"></div>
+          </section>
+        </aside>
+
+        <main id="storeWrap" class="softCard">
+          <canvas id="storeCanvas" width="1280" height="720"></canvas>
+          <div class="storeBadge">✨ iOS-style store view · random wait spots</div>
+          <div class="tryMeter">
+            <b id="tryTitle">Tryout meter</b>
+            <span id="trySubtitle">Place an instrument on the stand to begin.</span>
+            <div class="tryBar"><div id="tryFill"></div></div>
+          </div>
+          <div class="floatingHint" id="hintText">Start with Get Inventory → Place on Stand → Tryout → Sale.</div>
+        </main>
+
+        <aside id="rightRail">
+          <section id="inventoryPanel" class="panel glass">
+            <div class="panelHeader">
+              <div class="panelTitle">Active instrument</div><div class="pill" id="phasePill">inventory</div>
+            </div>
+            <div class="currentItem">
+              <div class="itemIcon" id="itemIcon">🎸</div>
+              <div><h3 id="itemTitle">No item selected</h3><p id="itemCopy">Pull inventory from the back room, then put the instrument on the feature stand.</p></div>
+            </div>
+            <div class="smallText" id="customerTarget">Target: no customer assigned yet.</div>
+          </section>
+
+          <section id="actionsPanel" class="panel glass">
+            <div class="panelHeader">
+              <div class="panelTitle">Loop Actions</div><div class="pill">manual</div>
+            </div>
+            <div class="actionStack">
+              <button class="actionBtn primary" id="getInventoryBtn"><div class="actionMain"><div class="actionTitle">📦 Get Inventory</div><div class="actionSub">Choose the best product for a waiting customer.</div></div><div class="cost">Free</div></button>
+              <button class="actionBtn" id="placeStandBtn"><div class="actionMain"><div class="actionTitle">🎸 Place on Stand</div><div class="actionSub">Move the item into the store display.</div></div><div class="cost">Step 2</div></button>
+              <button class="actionBtn" id="tryBtn"><div class="actionMain"><div class="actionTitle">🎶 Let Customer Try</div><div class="actionSub">Customer walks over and plays it.</div></div><div class="cost">Step 3</div></button>
+              <button class="actionBtn good" id="saleBtn"><div class="actionMain"><div class="actionTitle">💳 Make Sale</div><div class="actionSub">Earn cash and music prestige.</div></div><div class="cost">Step 4</div></button>
+            </div>
+          </section>
+
+          <section id="upgradesPanel" class="panel glass">
+            <div class="panelHeader">
+              <div class="panelTitle">Open lines · hire · expand</div><div class="pill">growth</div>
+            </div>
+            <div class="upgradeGrid" id="upgradeGrid"></div>
+          </section>
+        </aside>
+
+        <footer id="bottomBar">
+          <div class="bottomCard glass">
+            <div class="bottomTitle">What changed</div>
+            <div class="bottomCopy">The store is now a warm pawn-shop floor with instrument stands, tryout rug, wall inventory, benches, staff routes, and random customer waiting spots.</div>
+          </div>
+          <div class="bottomCard glass">
+            <div class="bottomTitle">New loop</div>
+            <div class="bottomCopy">Inventory → stand → tryout → sale → cash + prestige → new product line, staff, expansion, and higher-end customers.</div>
+          </div>
+          <div class="bottomCard glass">
+            <div class="tabs">
+              <div class="tab"><b>🎸</b>Guitars</div>
+              <div class="tab"><b>🎛️</b>Gear</div>
+              <div class="tab"><b>⭐</b>Prestige</div>
+            </div>
+          </div>
+        </footer>
+      </div>
+      <div id="toast"></div>
+    </div>
   </div>
-  <button id="menuBtn" class="glass" aria-label="Open menu"><span class="hamb"><i></i><i></i><i></i></span></button>
-  <div id="objective" class="glass"><div class="objectiveTop" id="objectiveTop">Current goal</div><div class="objectiveText" id="objectiveText">Pick up a guitar order from the left queue.</div></div>
-  <div id="bottomPanel" class="glass"><div class="progressTitle"><span id="progressTitle">Action</span><span id="progressPct">0%</span></div><div class="progressOuter"><div id="progressFill" class="progressFill"></div></div><div class="prompt" id="promptText">Move with the left joystick. Hold Work on the right.</div></div>
-  <div id="controls"><div class="controlZone"><div id="stick"><div id="knob"></div></div></div><div class="controlZone"><button id="actionBtn">WORK<span>hold</span></button></div></div>
-  <div id="toast"></div>
-  <div id="drawerShade"></div>
-  <aside id="drawer" class="glass">
-    <div class="drawerHead"><div><h2>Shop Stack</h2><p>Orders, unlocks, staff, help</p></div><button class="xBtn" id="closeDrawer">x</button></div>
-    <div class="tabs"><button class="tab active" data-tab="orders">Orders</button><button class="tab" data-tab="build">Build</button><button class="tab" data-tab="staff">Staff</button><button class="tab" data-tab="help">Help</button></div>
-    <div id="drawerBody"></div>
-  </aside>
-  <div id="modal"><div class="modalPanel glass" id="modalPanel"></div></div>
-  <div id="rotateNotice"><div class="rotateBox"><div class="rotatePhone"></div><h2>Rotate to landscape</h2><p>This demo is tuned for iPhone horizontal play with a left joystick and right Work button.</p></div></div>
 </div>
+
 <script>
-(function(){
-'use strict';
-var canvas=document.getElementById('world');
-var ctx=canvas.getContext('2d');
-var W=1600,H=900,CELL=36,COLS=Math.ceil(W/CELL),ROWS=Math.ceil(H/CELL);
-function $(id){return document.getElementById(id)}
-function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
-function rnd(a,b){return a+Math.random()*(b-a)}
-function center(r){return{x:r.x+r.w/2,y:r.y+r.h/2}}
-function rectHit(a,b,p){p=p||0;return !(a.x+a.w+p<b.x||a.x-p>b.x+b.w||a.y+a.h+p<b.y||a.y-p>b.y+b.h)}
-function pointInRect(x,y,r,p){p=p||0;return x>=r.x-p&&x<=r.x+r.w+p&&y>=r.y-p&&y<=r.y+r.h+p}
-function dist(a,b){var dx=a.x-b.x,dy=a.y-b.y;return Math.hypot(dx,dy)}
-function money(n){return '$'+Math.floor(n)}
-function actorRect(a,x,y){return{x:x==null?a.x:x,y:y==null?a.y:y,w:a.w,h:a.h}}
-function actorCenter(a){return{x:a.x+a.w/2,y:a.y+a.h/2}}
-function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
-function fillRound(x,y,w,h,r,fill,stroke,lw){rr(ctx,x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||2;ctx.stroke()}}
-function text(t,x,y,size,color,align,weight){ctx.font=(weight||800)+' '+size+'px -apple-system,BlinkMacSystemFont,Inter,system-ui,sans-serif';ctx.textAlign=align||'left';ctx.textBaseline='alphabetic';ctx.fillStyle=color||'#253047';ctx.fillText(t,x,y)}
+(() => {
+  "use strict";
 
-var TYPES={
-  guitar:{key:'guitar',name:'Guitar',icon:'GTR',color:'#ffafbf',cost:0,unlocked:true,queue:{x:54,y:128,w:228,h:118},items:['Student guitar','Pastel strat','Acoustic beater','Bass trade-in']},
-  keys:{key:'keys',name:'Keys',icon:'KEY',color:'#a9d8ff',cost:260,unlocked:false,queue:{x:54,y:330,w:228,h:118},items:['Mini keys','Stage piano','Toy synth','Studio module']},
-  drums:{key:'drums',name:'Drums',icon:'DRM',color:'#ffd4a8',cost:420,unlocked:false,queue:{x:54,y:532,w:228,h:118},items:['Snare drum','Kick drum','Cymbal pair','Starter kit']}
-};
-var STATIONS={
-  inspect:{key:'inspect',name:'Inspect Desk',chip:'Inspect',icon:'IN',cost:0,unlocked:true,time:1.7,color:'#d9cbff',box:{x:380,y:118,w:174,h:102}},
-  clean:{key:'clean',name:'Clean Bench',chip:'Clean',icon:'CL',cost:0,unlocked:true,time:2.2,color:'#c5f2d8',box:{x:636,y:118,w:174,h:102}},
-  repair:{key:'repair',name:'Repair Bay',chip:'Repair',icon:'RP',cost:190,unlocked:false,time:3.1,color:'#ffd6df',box:{x:892,y:118,w:174,h:102}},
-  tune:{key:'tune',name:'Tune Booth',chip:'Tune',icon:'TN',cost:230,unlocked:false,time:2.8,color:'#cde8ff',box:{x:1148,y:118,w:174,h:102}},
-  photo:{key:'photo',name:'Photo Mat',chip:'Photo',icon:'PH',cost:260,unlocked:false,time:2.2,color:'#ffe8ba',box:{x:380,y:610,w:174,h:102}},
-  price:{key:'price',name:'Price Desk',chip:'Price',icon:'PR',cost:310,unlocked:false,time:2.4,color:'#eadcff',box:{x:636,y:610,w:174,h:102}},
-  pack:{key:'pack',name:'Pack Table',chip:'Pack',icon:'PK',cost:360,unlocked:false,time:2.6,color:'#d4f5ff',box:{x:892,y:610,w:174,h:102}},
-  display:{key:'display',name:'Display Shelf',chip:'Display',icon:'DS',cost:440,unlocked:false,time:2.5,color:'#fff0bd',box:{x:1148,y:610,w:174,h:102}}
-};
-var ORDER_STEPS=['inspect','clean','repair','tune','photo','price','pack','display'];
-var SHELVES=[
-  {x:352,y:312,w:186,h:64,label:'Vinyl shelf'}, {x:588,y:312,w:186,h:64,label:'Cable shelf'}, {x:824,y:312,w:186,h:64,label:'Accessory shelf'}, {x:1060,y:312,w:186,h:64,label:'Case shelf'},
-  {x:352,y:442,w:186,h:64,label:'Used rack'}, {x:588,y:442,w:186,h:64,label:'Amp rack'}, {x:824,y:442,w:186,h:64,label:'Pedal rack'}, {x:1060,y:442,w:186,h:64,label:'Pickup rack'}
-];
-var COLORS=['#8ecff7','#d2b8ff','#ffc3cf','#a9e8c8','#ffd39f','#b8cdfc','#efc5ff'];
-var state, player, keys={}, joy={x:0,y:0}, actionHeld=false, started=false, paused=true, last=performance.now(), toastTimer=0, effects=[], activeTab='orders', drawerOpen=false;
+  const $ = (id) => document.getElementById(id);
+  const canvas = $("storeCanvas");
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width;
+  const H = canvas.height;
 
-function newState(){return{cash:125,day:1,timeLeft:145,dayLen:145,demand:1,nextOrder:1,orders:[],served:0,servedToday:0,missedToday:0,spawn:0,staff:[],staffSeq:1,up:{speed:0,tools:0,slots:0,patience:0},mode:'menu'}}
-function initActors(){player={id:'player',name:'You',x:304,y:190,w:34,h:34,color:'#65cfa2',speed:225,carry:null,work:null,lastDir:{x:1,y:0}}}
-function unlockedTypes(){return Object.keys(TYPES).filter(function(k){return TYPES[k].unlocked})}
-function unlockedStations(){return ORDER_STEPS.filter(function(k){return STATIONS[k].unlocked})}
-function activeLimit(){return 2+state.up.slots+Math.floor(state.demand/2)+Math.max(0,unlockedTypes().length-1)}
-function speedMul(){return 1+state.up.speed*.12}
-function toolMul(){return 1+state.up.tools*.18}
-function patBonus(){return state.up.patience*7}
-function obstacles(){var arr=SHELVES.slice();ORDER_STEPS.forEach(function(k){arr.push(STATIONS[k].box)});return arr}
-function isPointBlocked(x,y,pad){pad=pad||0;if(x<28||y<82||x>W-28||y>H-28)return true;var obs=obstacles();for(var i=0;i<obs.length;i++)if(pointInRect(x,y,obs[i],pad))return true;return false}
-function collides(actor,x,y){var r=actorRect(actor,x,y);if(r.x<24||r.y<82||r.x+r.w>W-24||r.y+r.h>H-24)return true;var obs=obstacles();for(var i=0;i<obs.length;i++)if(rectHit(r,obs[i],5))return true;return false}
-function moveActor(a,dx,dy){if(!dx&&!dy)return;var nx=a.x+dx;if(!collides(a,nx,a.y))a.x=nx;var ny=a.y+dy;if(!collides(a,a.x,ny))a.y=ny;a.x=clamp(a.x,24,W-a.w-24);a.y=clamp(a.y,82,H-a.h-24)}
-function nearRect(a,r,p){return rectHit(actorRect(a),r,p||30)}
-function nearPoint(a,p,rad){return dist(actorCenter(a),p)<=rad}
+  const lines = {
+    electric: {key:"electric", label:"Electric Guitar", emoji:"🎸", color:"#f36a4a", base:135, prestige:7, unlocked:true, stock:3, cost:0},
+    acoustic: {key:"acoustic", label:"Acoustic Guitar", emoji:"🪕", color:"#d99645", base:165, prestige:9, unlocked:false, stock:0, cost:280},
+    bass: {key:"bass", label:"Bass Guitar", emoji:"🎸", color:"#ffe07b", base:210, prestige:12, unlocked:false, stock:0, cost:520},
+    amp: {key:"amp", label:"Amplifier", emoji:"🔊", color:"#22242b", base:240, prestige:13, unlocked:false, stock:0, cost:650},
+    pedal: {key:"pedal", label:"Pedal Board", emoji:"🎛️", color:"#80e0ff", base:190, prestige:10, unlocked:false, stock:0, cost:430},
+    vintage: {key:"vintage", label:"Vintage Collectible", emoji:"💎", color:"#b69aff", base:420, prestige:24, unlocked:false, stock:0, cost:1450}
+  };
 
-function cellOf(p){return{c:clamp(Math.floor(p.x/CELL),0,COLS-1),r:clamp(Math.floor(p.y/CELL),0,ROWS-1)}}
-function key(c,r){return c+','+r}
-function cellCenter(c,r){return{x:c*CELL+CELL/2,y:r*CELL+CELL/2}}
-function blockedCell(c,r){var p=cellCenter(c,r);return isPointBlocked(p.x,p.y,26)}
-function nearestFreeCell(c,r){if(!blockedCell(c,r))return{c:c,r:r};var best=null,bestD=1e9;for(var rad=1;rad<12;rad++){for(var dc=-rad;dc<=rad;dc++){for(var dr=-rad;dr<=rad;dr++){var nc=c+dc,nr=r+dr;if(nc<0||nr<0||nc>=COLS||nr>=ROWS)continue;if(blockedCell(nc,nr))continue;var d=dc*dc+dr*dr;if(d<bestD){bestD=d;best={c:nc,r:nr}}}}if(best)return best}return{c:clamp(c,0,COLS-1),r:clamp(r,0,ROWS-1)}}
-function lineClear(a,b){var d=dist(a,b),steps=Math.ceil(d/18);for(var i=0;i<=steps;i++){var t=i/Math.max(1,steps);var x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t;if(isPointBlocked(x,y,24))return false}return true}
-function smoothPath(start,path){if(!path.length)return path;var out=[],from=start,i=0;while(i<path.length){var best=i;for(var j=path.length-1;j>=i;j--){if(lineClear(from,path[j])){best=j;break}}out.push(path[best]);from=path[best];i=best+1}return out}
-function findPath(start,target){var sc=nearestFreeCell(cellOf(start).c,cellOf(start).r),tc=nearestFreeCell(cellOf(target).c,cellOf(target).r);if(lineClear(start,target))return[target];var open={},g={},f={},came={},openList=[];var sk=key(sc.c,sc.r),tk=key(tc.c,tc.r);function h(c,r){return Math.abs(c-tc.c)+Math.abs(r-tc.r)}open[sk]={c:sc.c,r:sc.r};g[sk]=0;f[sk]=h(sc.c,sc.r);openList.push(sk);var guard=0,dirs=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];while(openList.length&&guard++<1800){var best=0;for(var bi=1;bi<openList.length;bi++)if(f[openList[bi]]<f[openList[best]])best=bi;var ck=openList.splice(best,1)[0],cur=open[ck];delete open[ck];if(ck===tk){var pts=[],walk=ck;while(walk&&walk!==sk){var parts=walk.split(',');pts.push(cellCenter(+parts[0],+parts[1]));walk=came[walk]}pts.reverse();pts.push(target);return smoothPath(start,pts).slice(0,36)}for(var di=0;di<dirs.length;di++){var dc=dirs[di][0],dr=dirs[di][1],nc=cur.c+dc,nr=cur.r+dr;if(nc<0||nr<0||nc>=COLS||nr>=ROWS||blockedCell(nc,nr))continue;if(dc&&dr&&(blockedCell(cur.c+dc,cur.r)||blockedCell(cur.c,cur.r+dr)))continue;var nk=key(nc,nr),cost=(dc&&dr)?1.42:1,tent=g[ck]+cost;if(tent<(g[nk]==null?1e9:g[nk])){came[nk]=ck;g[nk]=tent;f[nk]=tent+h(nc,nr);if(!open[nk]){open[nk]={c:nc,r:nr};openList.push(nk)}}}}
-  return [target]
-}
-function freeCandidate(p){return !isPointBlocked(p.x,p.y,30)}
-function approachForRect(r,from,seed){var spots=[
-  {x:r.x+r.w/2,y:r.y-48},{x:r.x+r.w/2,y:r.y+r.h+48},{x:r.x-52,y:r.y+r.h/2},{x:r.x+r.w+52,y:r.y+r.h/2},
-  {x:r.x-48,y:r.y-42},{x:r.x+r.w+48,y:r.y-42},{x:r.x-48,y:r.y+r.h+42},{x:r.x+r.w+48,y:r.y+r.h+42}
-].filter(freeCandidate);if(!spots.length)spots=[{x:r.x+r.w/2,y:r.y+r.h+62}];seed=seed||0;spots.sort(function(a,b){var da=dist(a,from)+((Math.sin(seed+a.x*.1+a.y*.07)+1)*8);var db=dist(b,from)+((Math.sin(seed+b.x*.1+b.y*.07)+1)*8);return da-db});return spots[0]}
-function queueApproach(type,from,seed){return approachForRect(TYPES[type].queue,from,seed)}
-function stationApproach(k,from,seed){return approachForRect(STATIONS[k].box,from,seed)}
+  const waitSpots = [
+    {x:182,y:188,label:"near front window", vibe:"checking the OPEN sign"},
+    {x:325,y:530,label:"near the benches", vibe:"sitting on the amp bench"},
+    {x:1110,y:214,label:"far corner of the store", vibe:"browsing wall guitars"},
+    {x:990,y:548,label:"by the used records", vibe:"digging through crates"},
+    {x:620,y:112,label:"under the wall display", vibe:"looking at high shelves"},
+    {x:840,y:280,label:"beside the tryout rug", vibe:"waiting for a demo"},
+    {x:230,y:430,label:"near the repair counter", vibe:"talking about trade-ins"},
+    {x:1160,y:520,label:"lamp corner", vibe:"staring at vintage gear"},
+    {x:480,y:248,label:"middle aisle", vibe:"comparing prices"},
+    {x:690,y:610,label:"back aisle", vibe:"listening to staff"}
+  ];
 
-function makeOrder(type){var pool=unlockedStations();var maxSteps=Math.min(pool.length,1+Math.floor((state.day+state.demand)/2));var count=clamp(maxSteps,1,pool.length);if(pool.indexOf('inspect')>=0&&pool.indexOf('clean')>=0)count=Math.max(2,count);var steps=[];ORDER_STEPS.forEach(function(k){if(pool.indexOf(k)>=0&&steps.length<count)steps.push(k)});var item=TYPES[type].items[Math.floor(Math.random()*TYPES[type].items.length)];var reward=42+steps.length*24+state.demand*10+(type==='keys'?18:type==='drums'?26:0);var patience=56+steps.length*9+patBonus()-state.demand*2.5;return{id:state.nextOrder++,type:type,item:item,steps:steps,done:[],reward:reward,pat:clamp(patience,34,95),maxPat:clamp(patience,34,95),claimedBy:null,created:performance.now()}}
-function spawnOrder(){var types=unlockedTypes();var least=types.slice().sort(function(a,b){return state.orders.filter(function(o){return o.type===a}).length-state.orders.filter(function(o){return o.type===b}).length})[0];var type=Math.random()<.7?least:types[Math.floor(Math.random()*types.length)];state.orders.push(makeOrder(type));dirty()}
-function fillOrders(){while(state.orders.length<activeLimit())spawnOrder()}
-function nextTask(o){for(var i=0;i<o.steps.length;i++)if(o.done.indexOf(o.steps[i])<0)return o.steps[i];return null}
-function getQueueOrder(type){var list=state.orders.filter(function(o){return o.type===type&&!o.claimedBy});list.sort(function(a,b){return a.created-b.created});return list[0]||null}
-function getStaffJob(){var list=state.orders.filter(function(o){return !o.claimedBy});list.sort(function(a,b){return a.pat-b.pat});return list[0]||null}
-function completeStep(order,task,actor){if(!order||order.done.indexOf(task)>=0)return;order.done.push(task);addEffect(STATIONS[task].chip,actor.x+actor.w/2,actor.y-8,'#3d9674');toast((actor.id==='player'?'You':actor.name)+' finished '+STATIONS[task].chip+'.','good');dirty()}
-function completeOrder(order,actor){var i=state.orders.indexOf(order);if(i<0)return;var tip=Math.floor((order.pat/order.maxPat)*(14+state.demand*4));var earned=order.reward+tip;state.orders.splice(i,1);state.cash+=earned;state.served++;state.servedToday++;addEffect('+'+money(earned),actor.x+actor.w/2,actor.y-10,'#8c6530');toast((actor.id==='player'?'Delivered':actor.name+' delivered')+' '+order.item+'.','good');dirty();fillOrders()}
-function missOrder(order){var i=state.orders.indexOf(order);if(i<0)return;state.orders.splice(i,1);state.missedToday++;state.cash=Math.max(0,state.cash-6);if(player.carry===order){player.carry=null;player.work=null}state.staff.forEach(function(s){if(s.job===order||s.carry===order){s.job=null;s.carry=null;s.state='idle';s.path=[]}});toast('A customer left the queue. Penalty $6.','bad');dirty();fillOrders()}
+  const names = ["Maya","Leo","Riley","Sam","June","Theo","Ava","Nico","Noah","Zoe","Iris","Kai","Ash","Mina"];
+  const avatars = ["🧑","👩","👨","👱","🧔","👩‍🦱","👨‍🦰","🧓","👩‍🦳","🧑‍🎤","👨‍🎤","👩‍🎤"];
 
-function currentAction(){if(paused||state.mode!=='running')return{kind:'none',label:'Paused'};if(player.carry){var o=player.carry,nt=nextTask(o);if(nt){var st=STATIONS[nt];if(nearRect(player,st.box,36))return{kind:'work',task:nt,label:'Hold to '+st.chip+' '+o.item};return{kind:'hint',label:'Go to '+st.name+' for '+st.chip}}var q=TYPES[o.type].queue;if(nearRect(player,q,42))return{kind:'deliver',label:'Deliver '+o.item+' to '+TYPES[o.type].name+' queue'};return{kind:'hint',label:'Return to the '+TYPES[o.type].name+' queue'}}var types=unlockedTypes();for(var i=0;i<types.length;i++){var type=types[i];if(nearRect(player,TYPES[type].queue,34)){var order=getQueueOrder(type);if(order)return{kind:'pickup',type:type,label:'Pick up '+order.item};return{kind:'hint',label:'No '+TYPES[type].name+' jobs waiting'}}}return{kind:'hint',label:'Walk to a queue or open Shop Stack'}}
-function actionStart(){var a=currentAction();if(a.kind==='pickup'){var o=getQueueOrder(a.type);if(o){o.claimedBy='player';player.carry=o;player.work=null;toast('Picked up '+o.item+'.','good');dirty()}}else if(a.kind==='deliver'&&player.carry){completeOrder(player.carry,player);player.carry=null;player.work=null;dirty()}}
-function updatePlayerWork(dt){var a=currentAction();if(actionHeld&&a.kind==='work'){var k=player.carry.id+':'+a.task;if(!player.work||player.work.k!==k)player.work={k:k,task:a.task,p:0};player.work.p+=dt*toolMul();if(player.work.p>=STATIONS[a.task].time){completeStep(player.carry,a.task,player);player.work=null}}else if(player.work&&a.kind!=='work'){player.work=null}}
+  const loopSteps = [
+    {key:"inventory", icon:"📦", label:"Get inventory"},
+    {key:"stand", icon:"🎸", label:"Place on stand"},
+    {key:"tryout", icon:"🎶", label:"Customer tryout"},
+    {key:"sale", icon:"💳", label:"Make sale"},
+    {key:"expand", icon:"⭐", label:"Grow segment"}
+  ];
 
-function setNav(a,target){a.target={x:target.x,y:target.y};a.path=findPath(actorCenter(a),target);a.pathIndex=0;a.stuck=0;a.lastGoalDist=9999;a.repath=.55+Math.random()*.35}
-function followNav(a,dt){if(!a.target)return true;if(!a.path||!a.path.length||a.repath<=0){setNav(a,a.target)}else a.repath-=dt;var goal=a.path[0]||a.target;var pos=actorCenter(a);var dx=goal.x-pos.x,dy=goal.y-pos.y,d=Math.hypot(dx,dy);if(d<8){if(a.path.length)a.path.shift();return dist(actorCenter(a),a.target)<28}var sx=dx/d,sy=dy/d;var sep={x:0,y:0};var actors=[player].concat(state.staff);actors.forEach(function(o){if(o===a)return;var p=actorCenter(o),ad=dist(pos,p);if(ad>0&&ad<42){sep.x+=(pos.x-p.x)/ad*(42-ad)/42;sep.y+=(pos.y-p.y)/ad*(42-ad)/42}});var vx=sx+sep.x*.55,vy=sy+sep.y*.55,vm=Math.hypot(vx,vy)||1;var old=dist(pos,goal);var step=(a.speed*speedMul())*dt;moveActor(a,vx/vm*step,vy/vm*step);var now=dist(actorCenter(a),goal);if(now>old-1.5)a.stuck+=dt;else a.stuck=Math.max(0,a.stuck-dt*.7);if(a.stuck>.55){var around={x:a.target.x+rnd(-36,36),y:a.target.y+rnd(-36,36)};if(freeCandidate(around))a.target=around;a.path=findPath(actorCenter(a),a.target);a.stuck=0;a.repath=.5}return dist(actorCenter(a),a.target)<28}
-function hireCost(){return 180+state.staff.length*95}
-function hireStaff(){var c=hireCost();if(state.cash<c){toast('Need '+money(c)+' to hire a helper.','bad');return}state.cash-=c;var n=state.staffSeq++;state.staff.push({id:'staff'+n,name:'Helper '+n,x:305,y:260+(state.staff.length%4)*42,w:32,h:32,color:COLORS[state.staff.length%COLORS.length],speed:184,state:'idle',job:null,carry:null,target:null,path:[],stuck:0,repath:0,work:0,workTask:null,seed:Math.random()*1000});toast('Hired Helper '+n+'. Staff use obstacle-aware paths around shelves.','good');dirty()}
-function updateStaff(a,dt){if(a.job&&state.orders.indexOf(a.job)<0){a.state='idle';a.job=null;a.carry=null;a.path=[];a.target=null}if(a.state==='idle'){var job=getStaffJob();if(job){job.claimedBy=a.id;a.job=job;a.state='toQueue';a.seed+=17;setNav(a,queueApproach(job.type,actorCenter(a),a.seed));dirty()}}
- else if(a.state==='toQueue'){if(followNav(a,dt)&&a.job){a.carry=a.job;a.state='toStation';var nt=nextTask(a.carry);if(nt)setNav(a,stationApproach(nt,actorCenter(a),a.seed));else setNav(a,queueApproach(a.carry.type,actorCenter(a),a.seed))}}
- else if(a.state==='toStation'){if(!a.carry){a.state='idle';return}var nt=nextTask(a.carry);if(!nt){a.state='toDeliver';setNav(a,queueApproach(a.carry.type,actorCenter(a),a.seed));return}if(followNav(a,dt)||nearRect(a,STATIONS[nt].box,38)){a.state='working';a.work=0;a.workTask=nt}}
- else if(a.state==='working'){if(!a.carry){a.state='idle';return}a.work+=dt*toolMul()*.82;if(a.work>=STATIONS[a.workTask].time){completeStep(a.carry,a.workTask,a);var nxt=nextTask(a.carry);a.work=0;a.workTask=null;if(nxt){a.state='toStation';a.seed+=23;setNav(a,stationApproach(nxt,actorCenter(a),a.seed))}else{a.state='toDeliver';a.seed+=31;setNav(a,queueApproach(a.carry.type,actorCenter(a),a.seed))}}}
- else if(a.state==='toDeliver'){if(!a.carry){a.state='idle';return}if(followNav(a,dt)){completeOrder(a.carry,a);a.carry=null;a.job=null;a.state='idle';a.path=[];a.target=null}}
-}
+  const state = {
+    cash:256,
+    prestige:0,
+    day:7,
+    segment:"Walk-in",
+    segmentLevel:0,
+    capacity:4,
+    expansion:0,
+    staff:0,
+    current:null,
+    phase:"inventory",
+    tryProgress:0,
+    customers:[],
+    nextCustomerId:1,
+    toastTimer:0,
+    effects:[],
+    staffPulse:0,
+    last:performance.now(),
+    spawnTimer:0
+  };
 
-function canSpend(c){return state.cash>=c}
-function unlockQueue(k){var t=TYPES[k];if(t.unlocked)return;if(!canSpend(t.cost)){toast('Need '+money(t.cost)+' for '+t.name+' queue.','bad');return}state.cash-=t.cost;t.unlocked=true;toast(t.name+' queue unlocked.','good');dirty();fillOrders()}
-function unlockStation(k){var s=STATIONS[k];if(s.unlocked)return;if(!canSpend(s.cost)){toast('Need '+money(s.cost)+' for '+s.name+'.','bad');return}state.cash-=s.cost;s.unlocked=true;toast(s.name+' unlocked.','good');dirty();fillOrders()}
-function upgrade(kind){var labels={speed:'Runner Training',tools:'Tool Kit',slots:'Order Board',patience:'Queue Comfort'};var base={speed:120,tools:150,slots:210,patience:130}[kind];var cost=base+state.up[kind]*90;if(!canSpend(cost)){toast('Need '+money(cost)+' for '+labels[kind]+'.','bad');return}state.cash-=cost;state.up[kind]++;toast(labels[kind]+' upgraded.','good');dirty();fillOrders()}
-function endDay(){paused=true;state.mode='dayEnd';var bonus=state.servedToday*5;state.cash+=bonus;showModal('<h1>Day '+state.day+' complete</h1><p>You served '+state.servedToday+' customers, missed '+state.missedToday+', and earned a closing bonus of '+money(bonus)+'. Less important management stays behind the Shop Stack menu.</p><div class="modalGrid"><div class="miniFeature"><b>'+money(state.cash)+'</b>cash</div><div class="miniFeature"><b>'+state.servedToday+'</b>served today</div><div class="miniFeature"><b>'+state.demand+'</b>demand level</div></div><div class="modalActions"><button class="primary" data-modal="next">Start next day</button><button class="secondary" data-modal="demand">Raise demand + perk</button></div>')}
-function nextDay(raise){state.day++;state.dayLen=145+Math.min(45,state.day*5);state.timeLeft=state.dayLen;state.servedToday=0;state.missedToday=0;state.orders=[];state.spawn=0;if(raise){state.demand=Math.min(10,state.demand+1);state.cash+=80+state.demand*20;state.up.slots++}player.x=304;player.y=190;player.carry=null;player.work=null;state.staff.forEach(function(s,i){s.x=305;s.y=260+(i%4)*42;s.state='idle';s.job=null;s.carry=null;s.path=[];s.target=null});hideModal();paused=false;state.mode='running';fillOrders();toast('Day '+state.day+' started.','good');dirty()}
-function togglePause(){if(!started||state.mode==='dayEnd')return;paused=!paused;state.mode=paused?'paused':'running';if(paused){showModal('<h1>Paused</h1><p>The shop is frozen. Use Shop Stack for management, or resume play.</p><div class="modalActions"><button class="primary" data-modal="resume">Resume</button><button class="secondary" data-modal="restart">Restart demo</button></div>')}else hideModal();dirty()}
+  const segmentConfig = [
+    {name:"Walk-in", tag:"starter", min:0, cashMult:1, waitBonus:0},
+    {name:"Collector", tag:"mid-tier", min:80, cashMult:1.35, waitBonus:5},
+    {name:"Pro Artist", tag:"premium", min:190, cashMult:1.8, waitBonus:10},
+    {name:"High-End", tag:"VIP", min:360, cashMult:2.4, waitBonus:16}
+  ];
 
-var uiDirty=true;function dirty(){uiDirty=true}
-function toast(msg,type){var el=$('toast');el.textContent=msg;el.style.display='block';el.style.borderColor=type==='bad'?'rgba(255,139,158,.8)':'rgba(255,255,255,.95)';toastTimer=2.2}
-function addEffect(txt,x,y,color){effects.push({txt:txt,x:x,y:y,life:1,max:1,color:color})}
-function objective(){var a=currentAction();if(player.carry){var nt=nextTask(player.carry);if(nt)return 'Carry '+player.carry.item+' to '+STATIONS[nt].name+'.';return 'Return '+player.carry.item+' to the '+TYPES[player.carry.type].name+' queue.'}return a.label||'Pick up a waiting order.'}
-function renderHud(){if(!state)return;$('cashText').textContent=money(state.cash);$('dayText').textContent=state.day;$('orderText').textContent=state.orders.length+'/'+activeLimit();$('staffText').textContent=(state.staff.length+1);var t=Math.ceil(state.timeLeft);$('timeText').textContent=Math.floor(t/60)+':'+String(t%60).padStart(2,'0');$('cashFill').style.width=clamp(state.cash/900*100,0,100)+'%';$('dayFill').style.width=clamp(state.day/12*100,0,100)+'%';$('timeFill').style.width=clamp(state.timeLeft/state.dayLen*100,0,100)+'%';$('orderFill').style.width=clamp(state.orders.length/activeLimit()*100,0,100)+'%';$('staffFill').style.width=clamp((state.staff.length+1)/8*100,0,100)+'%';var a=currentAction();$('objectiveText').textContent=objective();$('promptText').textContent=a.label||'Use the joystick and Work button.';if(player.work){var pct=clamp(player.work.p/STATIONS[player.work.task].time*100,0,100);$('progressFill').style.width=pct+'%';$('progressPct').textContent=Math.floor(pct)+'%';$('progressTitle').textContent=STATIONS[player.work.task].chip}else{$('progressFill').style.width='0%';$('progressPct').textContent='0%';$('progressTitle').textContent=a.kind==='work'?'Ready':'Action'}}
-function orderHtml(){if(!state.orders.length)return '<div class="card miniNote">No active orders. The next customer will spawn automatically.</div>';return state.orders.slice().sort(function(a,b){return a.pat-b.pat}).map(function(o){var nt=nextTask(o),p=clamp(o.pat/o.maxPat*100,0,100);return '<div class="card orderCard"><div class="orderTop"><div><div class="orderName">#'+o.id+' '+o.item+'</div><div class="orderMeta">'+TYPES[o.type].name+' queue - '+(o.claimedBy?o.claimedBy==='player'?'claimed by you':'claimed by staff':'waiting')+' - '+Math.ceil(o.pat)+'s</div></div><b>'+money(o.reward)+'</b></div><div class="chips">'+o.steps.map(function(s){return '<span class="chip '+(o.done.indexOf(s)>=0?'done':s===nt?'next':'')+'">'+STATIONS[s].chip+'</span>'}).join('')+'</div><div class="pat"><div style="width:'+p+'%"></div></div></div>'}).join('')}
-function buildHtml(){var q=Object.keys(TYPES).map(function(k){var t=TYPES[k];return '<button class="buyBtn '+(t.unlocked?'good locked':'')+'" data-buy="queue" data-key="'+k+'"><b>'+t.name+' Queue</b><span>'+(t.unlocked?'Open':'Unlock for '+money(t.cost))+'</span></button>'}).join('');var s=ORDER_STEPS.map(function(k){var st=STATIONS[k];return '<button class="buyBtn '+(st.unlocked?'good locked':'')+'" data-buy="station" data-key="'+k+'"><b>'+st.name+'</b><span>'+(st.unlocked?'Open':'Unlock for '+money(st.cost))+'</span></button>'}).join('');var up=['speed','tools','slots','patience'].map(function(k){var label={speed:'Runner Training',tools:'Tool Kit',slots:'Order Board',patience:'Queue Comfort'}[k];var cost={speed:120,tools:150,slots:210,patience:130}[k]+state.up[k]*90;return '<button class="buyBtn" data-buy="upgrade" data-key="'+k+'"><b>'+label+' Lv.'+state.up[k]+'</b><span>'+money(cost)+'</span></button>'}).join('');return '<div class="card"><div class="cardTitle">Queues <small>customer types</small></div><div class="btnGrid" style="margin-top:10px">'+q+'</div></div><div class="card"><div class="cardTitle">Benches <small>work steps</small></div><div class="btnGrid" style="margin-top:10px">'+s+'</div></div><div class="card"><div class="cardTitle">Upgrades <small>all actors</small></div><div class="btnGrid" style="margin-top:10px">'+up+'</div></div>'}
-function staffHtml(){var lines=state.staff.length?state.staff.map(function(s){return '<div class="card staffLine"><span><i class="statusDot"></i> '+s.name+'</span><span>'+staffStatus(s)+'</span></div>'}).join(''):'<div class="card miniNote">No helpers yet. Hire staff to auto-run jobs with obstacle-aware paths.</div>';return '<div class="card"><div class="cardTitle">Hire Helper <small>'+money(hireCost())+'</small></div><p class="miniNote">Helpers go to the correct queue, pick up the exact item, route around shelves, use each bench, then deliver back to the origin queue.</p><div style="margin-top:10px"><button class="buyBtn" data-buy="hire"><b>Hire Helper</b><span>'+money(hireCost())+'</span></button></div></div>'+lines}
-function staffStatus(s){if(s.state==='idle')return'waiting';if(s.state==='toQueue')return'to queue';if(s.state==='toStation')return'to bench';if(s.state==='working')return'working';if(s.state==='toDeliver')return'delivering';return'busy'}
-function helpHtml(){return '<div class="card"><div class="cardTitle">Controls <small>mobile first</small></div><p class="miniNote">Left joystick moves. Right Work button picks up, delivers, and fills bench progress when held. Keyboard also works: WASD or arrows, Space, P.</p></div><div class="card"><div class="cardTitle">Pathfinding fix <small>staff</small></div><p class="miniNote">Staff now target free approach points beside benches instead of bench centers. Their A* grid inflates shelves and station bodies, smooths visible path segments, and repaths when progress stalls, so they walk around obstacles rather than pushing into shelves.</p></div><div class="card"><div class="cardTitle">UI stack <small>iOS style</small></div><p class="miniNote">Only the core HUD stays on screen. Orders, build buttons, worker details, and help live behind the burger stack.</p></div>'}
-function renderDrawer(){var body=$('drawerBody');if(activeTab==='orders')body.innerHTML=orderHtml();if(activeTab==='build')body.innerHTML=buildHtml();if(activeTab==='staff')body.innerHTML=staffHtml();if(activeTab==='help')body.innerHTML=helpHtml();document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',t.dataset.tab===activeTab)})}
-function updateUI(){renderHud();if(uiDirty){renderDrawer();uiDirty=false}}
+  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+  function money(v){ return "$" + Math.round(v); }
+  function choice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  function rand(min,max){ return min + Math.random()*(max-min); }
+  function unlockedLines(){ return Object.values(lines).filter(l => l.unlocked); }
+  function availableLines(){ return unlockedLines().filter(l => l.stock > 0); }
+  function currentSegment(){ return segmentConfig[state.segmentLevel]; }
 
-function draw(){ctx.clearRect(0,0,W,H);drawFloor();Object.keys(TYPES).forEach(drawQueue);SHELVES.forEach(drawShelf);ORDER_STEPS.forEach(drawStation);drawPlayerTarget();state.staff.forEach(function(s){drawPath(s);drawActor(s,false)});drawActor(player,true);effects.forEach(function(e){ctx.globalAlpha=clamp(e.life/e.max,0,1);text(e.txt,e.x,e.y,22,e.color,'center',950);ctx.globalAlpha=1})}
-function drawFloor(){var g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,'#fff8f0');g.addColorStop(.5,'#eef8ff');g.addColorStop(1,'#fff1f7');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.fillStyle='rgba(255,255,255,.6)';fillRound(22,76,W-44,H-98,32,'rgba(255,255,255,.42)','rgba(255,255,255,.85)',2);ctx.strokeStyle='rgba(89,107,134,.08)';ctx.lineWidth=1;for(var x=48;x<W;x+=48){ctx.beginPath();ctx.moveTo(x,86);ctx.lineTo(x,H-28);ctx.stroke()}for(var y=96;y<H;y+=48){ctx.beginPath();ctx.moveTo(32,y);ctx.lineTo(W-32,y);ctx.stroke()}ctx.fillStyle='rgba(101,207,162,.08)';ctx.fillRect(310,254,1030,66);ctx.fillRect(310,520,1030,66);ctx.fillStyle='rgba(110,159,251,.08)';ctx.fillRect(300,380,1050,54);text('MAIN AISLE',825,416,18,'rgba(68,83,111,.35)','center',950);text('soft placeholder music shop - shelves are real obstacles',W/2,58,18,'rgba(68,83,111,.55)','center',850)}
-function drawQueue(k){var t=TYPES[k],q=t.queue;fillRound(q.x,q.y,q.w,q.h,24,t.unlocked?'rgba(255,255,255,.74)':'rgba(226,229,238,.65)',t.unlocked?t.color:'rgba(90,98,116,.2)',3);text(t.icon,q.x+30,q.y+58,25,t.unlocked?'#253047':'#9aa5b5','center',950);text(t.name+' Queue',q.x+76,q.y+42,17,'#253047','left',950);if(!t.unlocked){text('locked '+money(t.cost),q.x+76,q.y+66,13,'#8a95a6','left',850);return}var same=state.orders.filter(function(o){return o.type===k}).sort(function(a,b){return a.created-b.created});text(same.length+' waiting',q.x+76,q.y+66,13,'#71809a','left',850);same.slice(0,4).forEach(function(o,i){var cx=q.x+52+i*39,cy=q.y+94;fillRound(cx-15,cy-28,30,30,11,i===0?'#fff2bd':'#e9f5ff','#fff',2);text('C',cx,cy-7,15,'#596b86','center',950);if(o.claimedBy)text('ok',cx,cy+15,10,'#4d9b79','center',950)})}
-function drawShelf(s){fillRound(s.x,s.y,s.w,s.h,18,'#f5d9bd','#ffffff',3);ctx.fillStyle='rgba(141,101,65,.13)';ctx.fillRect(s.x+12,s.y+12,s.w-24,10);text(s.label,s.x+s.w/2,s.y+40,13,'#8c6530','center',900)}
-function drawStation(k){var s=STATIONS[k],b=s.box;fillRound(b.x,b.y,b.w,b.h,22,s.unlocked?s.color:'rgba(226,229,238,.72)',s.unlocked?'#fff':'rgba(90,98,116,.2)',3);text(s.icon,b.x+34,b.y+61,24,s.unlocked?'#253047':'#96a0b0','center',950);text(s.name,b.x+70,b.y+44,16,'#253047','left',950);text(s.unlocked?'hold Work':'locked '+money(s.cost),b.x+70,b.y+67,12,'#71809a','left',850)}
-function drawPlayerTarget(){if(!player.carry)return;var nt=nextTask(player.carry),r=nt?STATIONS[nt].box:TYPES[player.carry.type].queue;ctx.save();ctx.strokeStyle='#ff9aac';ctx.lineWidth=5;ctx.setLineDash([10,8]);ctx.strokeRect(r.x-8,r.y-8,r.w+16,r.h+16);ctx.restore();var a=actorCenter(player),b=center(r),dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1;ctx.save();ctx.strokeStyle='rgba(255,154,172,.75)';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(a.x+dx/d*36,a.y+dy/d*36);ctx.lineTo(b.x-dx/d*58,b.y-dy/d*58);ctx.stroke();ctx.restore()}
-function drawPath(a){if(!a.path||!a.path.length)return;ctx.save();ctx.strokeStyle='rgba(110,159,251,.25)';ctx.lineWidth=4;ctx.setLineDash([7,8]);ctx.beginPath();var p=actorCenter(a);ctx.moveTo(p.x,p.y);a.path.slice(0,10).forEach(function(pt){ctx.lineTo(pt.x,pt.y)});ctx.stroke();ctx.restore()}
-function drawActor(a,isPlayer){fillRound(a.x,a.y,a.w,a.h,13,a.color,'#ffffff',3);text(isPlayer?'ME':'H',a.x+a.w/2,a.y+23,17,'#253047','center',950);text(isPlayer?'You':a.name.replace('Helper ','H'),a.x+a.w/2,a.y-8,11,'#596b86','center',950);if(a.carry){fillRound(a.x+a.w-3,a.y-20,42,24,11,'rgba(255,255,255,.88)','#fff',2);text(TYPES[a.carry.type].icon,a.x+a.w+18,a.y-3,12,'#253047','center',950)}}
+  function updateSegment(){
+    let idx = 0;
+    for(let i=0;i<segmentConfig.length;i++){
+      if(state.prestige >= segmentConfig[i].min) idx = i;
+    }
+    if(idx !== state.segmentLevel){
+      state.segmentLevel = idx;
+      state.segment = segmentConfig[idx].name;
+      toast("New customer segment unlocked: " + state.segment + " customers.", "good");
+      popText("SEGMENT UP", 640, 150, "#ffd36a");
+    }
+  }
 
-function update(dt){if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)$('toast').style.display='none'}effects.forEach(function(e){e.life-=dt;e.y-=28*dt});effects=effects.filter(function(e){return e.life>0});if(!state||paused||state.mode!=='running')return;var mx=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+joy.x;var my=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0)+joy.y;var m=Math.hypot(mx,my);if(m>.08){player.lastDir={x:mx/m,y:my/m};moveActor(player,mx/m*player.speed*speedMul()*dt,my/m*player.speed*speedMul()*dt)}updatePlayerWork(dt);state.staff.forEach(function(s){updateStaff(s,dt)});state.timeLeft-=dt;if(state.timeLeft<=0){state.timeLeft=0;endDay();return}state.spawn-=dt;if(state.spawn<=0){if(state.orders.length<activeLimit())spawnOrder();state.spawn=Math.max(4.6,9.5-state.demand*.45-state.day*.08)}state.orders.slice().forEach(function(o){var line=state.orders.filter(function(x){return x.type===o.type}).sort(function(a,b){return a.created-b.created}).indexOf(o);var slow=line<=0?1:.35;var claimed=o.claimedBy?.78:1;o.pat-=dt*slow*claimed;if(o.pat<=0)missOrder(o)})}
-function tick(t){var dt=Math.min(.04,(t-last)/1000);last=t;update(dt);draw();updateUI();requestAnimationFrame(tick)}
+  function spawnCustomer(force=false){
+    if(state.customers.length >= state.capacity && !force) return;
+    const candidates = unlockedLines();
+    const want = choice(candidates);
+    const spot = choice(waitSpots);
+    const seg = currentSegment();
+    const wait = Math.round(rand(60,110) + seg.waitBonus + state.expansion*4);
+    const offer = Math.round(want.base * seg.cashMult * rand(.88,1.18));
+    const cust = {
+      id: state.nextCustomerId++,
+      name: choice(names),
+      avatar: choice(avatars),
+      wants: want.key,
+      offer,
+      waitMax: wait,
+      waitLeft: wait,
+      x: spot.x + rand(-18,18),
+      y: spot.y + rand(-14,14),
+      label: spot.label,
+      vibe: spot.vibe,
+      status:"waiting",
+      walkT: Math.random()*10,
+      bubble: rand(0,1)
+    };
+    state.customers.push(cust);
+  }
 
-function openDrawer(tab){activeTab=tab||activeTab;drawerOpen=true;$('drawer').classList.add('open');$('drawerShade').classList.add('open');dirty()}
-function closeDrawer(){drawerOpen=false;$('drawer').classList.remove('open');$('drawerShade').classList.remove('open')}
-$('menuBtn').onclick=function(){openDrawer(activeTab)};$('closeDrawer').onclick=closeDrawer;$('drawerShade').onclick=closeDrawer;document.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){activeTab=t.dataset.tab;dirty()}});
-$('drawerBody').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var kind=b.dataset.buy,key=b.dataset.key;if(kind==='queue')unlockQueue(key);if(kind==='station')unlockStation(key);if(kind==='upgrade')upgrade(key);if(kind==='hire')hireStaff()});
-function showModal(html){$('modalPanel').innerHTML=html;$('modal').classList.remove('hidden')}
-function hideModal(){$('modal').classList.add('hidden')}
-$('modal').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var act=b.dataset.modal;if(act==='start'){start()}if(act==='resume'){paused=false;state.mode='running';hideModal()}if(act==='restart'){start()}if(act==='next'){nextDay(false)}if(act==='demand'){nextDay(true)}});
-function start(){state=newState();Object.keys(TYPES).forEach(function(k){TYPES[k].unlocked=k==='guitar'});ORDER_STEPS.forEach(function(k){STATIONS[k].unlocked=k==='inspect'||k==='clean'});initActors();started=true;paused=false;state.mode='running';state.orders=[];state.spawn=0;fillOrders();hideModal();toast('Demo started. Pick up from the Guitar queue.','good');dirty()}
+  function ensureCustomers(){
+    while(state.customers.length < Math.min(state.capacity, 2 + state.expansion + Math.ceil(state.prestige/120))){
+      spawnCustomer();
+    }
+  }
 
-window.addEventListener('keydown',function(e){var k=e.key.toLowerCase();if(k===' '||k==='enter'){e.preventDefault();if(!actionHeld){actionHeld=true;actionStart()}return}if(k==='p'||k==='escape'){e.preventDefault();togglePause();return}keys[k]=true});
-window.addEventListener('keyup',function(e){var k=e.key.toLowerCase();if(k===' '||k==='enter'){e.preventDefault();actionHeld=false;return}keys[k]=false});
-var actionBtn=$('actionBtn');actionBtn.addEventListener('pointerdown',function(e){e.preventDefault();actionHeld=true;actionStart();actionBtn.setPointerCapture(e.pointerId)});actionBtn.addEventListener('pointerup',function(){actionHeld=false});actionBtn.addEventListener('pointercancel',function(){actionHeld=false});
-var stick=$('stick'),knob=$('knob'),stickCenter=null;function setStick(x,y){var r=stick.getBoundingClientRect();if(!stickCenter)stickCenter={x:r.left+r.width/2,y:r.top+r.height/2};var dx=x-stickCenter.x,dy=y-stickCenter.y,d=Math.hypot(dx,dy),max=44;var nx=d?dx/d:0,ny=d?dy/d:0,u=Math.min(max,d);knob.style.transform='translate(calc(-50% + '+(nx*u)+'px), calc(-50% + '+(ny*u)+'px))';joy.x=nx*u/max;joy.y=ny*u/max}
-stick.addEventListener('pointerdown',function(e){e.preventDefault();stick.setPointerCapture(e.pointerId);stickCenter=null;setStick(e.clientX,e.clientY)});stick.addEventListener('pointermove',function(e){if(e.buttons)setStick(e.clientX,e.clientY)});function resetStick(){joy.x=0;joy.y=0;knob.style.transform='translate(-50%,-50%)';stickCenter=null}stick.addEventListener('pointerup',resetStick);stick.addEventListener('pointercancel',resetStick);
-window.addEventListener('blur',function(){keys={};actionHeld=false;resetStick()});
+  function toast(msg,type="normal"){
+    const el = $("toast");
+    el.textContent = msg;
+    el.style.display = "block";
+    el.style.borderColor = type === "bad" ? "rgba(255,120,111,.6)" : type === "good" ? "rgba(121,242,167,.55)" : "rgba(255,255,255,.16)";
+    state.toastTimer = 2.4;
+  }
 
-state=newState();initActors();showModal('<h1>Pawn & Play</h1><p>A cleaner iPhone landscape demo with pastel iOS-style UI, burger-stack management, virtual joystick controls, and staff pathfinding that routes around shelves instead of walking into them.</p><div class="modalGrid"><div class="miniFeature"><b>Mobile ready</b>Left joystick and right Work button stay reachable.</div><div class="miniFeature"><b>Better mechanics</b>Queues, benches, staff, upgrades, day loop, patience, tips.</div><div class="miniFeature"><b>Path fix</b>Workers pick free approach points and repath when stuck.</div></div><div class="modalActions"><button class="primary" data-modal="start">Start demo</button><button class="secondary" data-modal="start">Skip tutorial</button></div>');requestAnimationFrame(tick);
+  function popText(text,x,y,color){
+    state.effects.push({text,x,y,color,life:1.25,max:1.25,vy:-36});
+  }
+
+  function pickTargetCustomer(){
+    if(!state.current) return null;
+    const line = state.current.line;
+    return state.customers
+      .filter(c => c.wants === line && c.status !== "sold")
+      .sort((a,b) => a.waitLeft - b.waitLeft)[0] || state.customers.sort((a,b)=>a.waitLeft-b.waitLeft)[0] || null;
+  }
+
+  function getInventory(){
+    if(state.phase !== "inventory"){
+      toast("Finish the current sale before pulling another item.", "bad");
+      return;
+    }
+    const waiting = state.customers.slice().sort((a,b)=>a.waitLeft-b.waitLeft);
+    let target = waiting.find(c => lines[c.wants].stock > 0);
+    let line = target ? lines[target.wants] : choice(availableLines());
+    if(!line){
+      const first = unlockedLines()[0];
+      first.stock += 1 + state.staff;
+      line = first;
+      toast("No stock was ready, so staff pulled emergency inventory.", "normal");
+    }
+    if(line.stock <= 0){
+      toast("That product line is out of stock. Restock or open another line.", "bad");
+      return;
+    }
+    line.stock -= 1;
+    if(!target) target = pickTargetCustomer();
+    if(target) target.status = "matched";
+    state.current = {
+      line:line.key,
+      targetId: target ? target.id : null,
+      itemName: line.label,
+      price: target ? target.offer : Math.round(line.base * currentSegment().cashMult),
+      prestige: line.prestige,
+      onStand:false,
+      tryout:false
+    };
+    state.phase = "stand";
+    toast("Inventory pulled: " + line.label + ". Put it on the stand.", "good");
+    popText("INVENTORY", 420, 460, "#6fd6ff");
+  }
+
+  function placeStand(){
+    if(state.phase !== "stand" || !state.current){
+      toast("Get inventory first.", "bad");
+      return;
+    }
+    state.current.onStand = true;
+    state.phase = "tryout";
+    state.tryProgress = 0;
+    const cust = getCurrentCustomer();
+    if(cust) cust.status = "walking";
+    toast("Instrument is on the feature stand. Invite the customer to try it.", "good");
+    popText("ON STAND", 646, 386, "#ffd36a");
+  }
+
+  function letTry(){
+    if(state.phase !== "tryout" || !state.current){
+      toast("Place an instrument on the stand before a tryout.", "bad");
+      return;
+    }
+    const cust = getCurrentCustomer() || pickTargetCustomer();
+    if(cust){
+      state.current.targetId = cust.id;
+      cust.status = "trying";
+    }
+    const gain = 35 + state.staff*8 + state.expansion*4;
+    state.tryProgress = clamp(state.tryProgress + gain, 0, 100);
+    popText("♪ tryout +" + gain, 742, 354, "#79f2a7");
+    if(state.tryProgress >= 100){
+      state.phase = "sale";
+      if(cust) cust.status = "ready";
+      toast("The customer likes it. Close the sale.", "good");
+    }else{
+      toast("Customer is trying it out. Tap again to fill the tryout meter.", "normal");
+    }
+  }
+
+  function makeSale(){
+    if(state.phase !== "sale" || !state.current){
+      toast("Complete the tryout before making the sale.", "bad");
+      return;
+    }
+    const cust = getCurrentCustomer() || pickTargetCustomer();
+    const line = lines[state.current.line];
+    const urgencyBonus = cust ? Math.round((cust.waitLeft/cust.waitMax) * 24) : 0;
+    const amount = state.current.price + urgencyBonus + state.staff*8;
+    const prestige = state.current.prestige + (cust && cust.label.includes("far") ? 2 : 0);
+    state.cash += amount;
+    state.prestige += prestige;
+    if(cust){
+      const idx = state.customers.findIndex(c => c.id === cust.id);
+      if(idx >= 0) state.customers.splice(idx,1);
+    }
+    popText("+" + money(amount), 930, 278, "#ffd36a");
+    popText("+" + prestige + " prestige", 930, 310, "#79f2a7");
+    toast("Sale complete: +" + money(amount) + " and +" + prestige + " music prestige.", "good");
+    state.current = null;
+    state.phase = "inventory";
+    state.tryProgress = 0;
+    updateSegment();
+    ensureCustomers();
+  }
+
+  function getCurrentCustomer(){
+    if(!state.current || !state.current.targetId) return null;
+    return state.customers.find(c => c.id === state.current.targetId) || null;
+  }
+
+  function restockAll(){
+    const unlocked = unlockedLines();
+    const cost = Math.max(60, 75 + unlocked.length*35 - state.staff*10);
+    if(state.cash < cost){ toast("Need " + money(cost) + " to restock.", "bad"); return; }
+    state.cash -= cost;
+    unlocked.forEach((l, i) => l.stock += 2 + state.staff + (i === 0 ? 1 : 0));
+    toast("Back-room inventory restocked across open product lines.", "good");
+    popText("RESTOCK", 235, 310, "#6fd6ff");
+  }
+
+  function unlockLine(key){
+    const l = lines[key];
+    if(l.unlocked) return;
+    if(state.cash < l.cost){ toast("Need " + money(l.cost) + " to open " + l.label + ".", "bad"); return; }
+    state.cash -= l.cost;
+    l.unlocked = true;
+    l.stock = 2;
+    toast("New product line opened: " + l.label + ".", "good");
+    popText("NEW LINE", 1100, 150, "#ffd36a");
+    ensureCustomers();
+  }
+
+  function hireStaff(){
+    const cost = 360 + state.staff*310;
+    if(state.cash < cost){ toast("Need " + money(cost) + " to hire staff.", "bad"); return; }
+    state.cash -= cost;
+    state.staff += 1;
+    unlockedLines().forEach(l => l.stock += 1);
+    toast("Staff hired. Tryouts are faster and restocks are stronger.", "good");
+    popText("+STAFF", 360, 190, "#79f2a7");
+  }
+
+  function expandSpace(){
+    const cost = 520 + state.expansion*650;
+    if(state.cash < cost){ toast("Need " + money(cost) + " to expand the shop.", "bad"); return; }
+    state.cash -= cost;
+    state.expansion += 1;
+    state.capacity = Math.min(8, state.capacity + 1);
+    toast("Store expanded. More random wait spots and higher capacity unlocked.", "good");
+    popText("EXPANDED", 640, 520, "#b69aff");
+    ensureCustomers();
+  }
+
+  function addPrestigeBoost(){
+    const cost = 420 + state.segmentLevel*280;
+    if(state.cash < cost){ toast("Need " + money(cost) + " for a decor prestige push.", "bad"); return; }
+    state.cash -= cost;
+    state.prestige += 38 + state.segmentLevel*12;
+    toast("Decor upgrade improved music prestige.", "good");
+    popText("DECOR +", 1050, 480, "#ffd36a");
+    updateSegment();
+  }
+
+  function updateLoopUI(){
+    const chain = $("loopChain");
+    chain.innerHTML = loopSteps.map(s => {
+      const active =
+        (s.key === "inventory" && state.phase === "inventory") ||
+        (s.key === "stand" && state.phase === "stand") ||
+        (s.key === "tryout" && state.phase === "tryout") ||
+        (s.key === "sale" && state.phase === "sale") ||
+        (s.key === "expand" && state.phase === "inventory" && state.prestige > 0);
+      const done =
+        (s.key === "inventory" && state.current) ||
+        (s.key === "stand" && state.current && state.current.onStand) ||
+        (s.key === "tryout" && state.tryProgress >= 100);
+      return `<div class="loopStep ${active ? "active" : ""} ${done ? "done" : ""}">
+        <div class="loopIcon">${s.icon}</div><div class="loopLabel">${s.label}</div>
+      </div>`;
+    }).join("");
+  }
+
+  function updateCustomerUI(){
+    const list = $("customersList");
+    if(!state.customers.length){
+      list.innerHTML = `<div class="empty">No customers are waiting. New shoppers will enter and pick random spots around the shop.</div>`;
+      return;
+    }
+    list.innerHTML = state.customers
+      .slice()
+      .sort((a,b)=>a.waitLeft-b.waitLeft)
+      .map(c => {
+        const l = lines[c.wants];
+        const active = state.current && state.current.targetId === c.id;
+        const pct = clamp(c.waitLeft/c.waitMax*100,0,100);
+        return `<div class="customerCard ${active ? "active" : ""}">
+          <div class="customerTop">
+            <div class="avatarWrap">
+              <div class="avatar">${c.avatar}</div>
+              <div style="min-width:0">
+                <div class="custName">${c.name} wants ${l.emoji} ${l.label}</div>
+                <div class="custWant">${c.vibe}</div>
+              </div>
+            </div>
+            <div class="waitNum">${Math.ceil(c.waitLeft)}s</div>
+          </div>
+          <div class="placeLine">📍 Waiting ${c.label} · random patience was ${c.waitMax}s</div>
+          <div class="patience"><div style="width:${pct}%"></div></div>
+        </div>`;
+      }).join("");
+  }
+
+  function updateInventoryUI(){
+    const current = state.current;
+    if(current){
+      const l = lines[current.line];
+      $("itemIcon").textContent = l.emoji;
+      $("itemTitle").textContent = current.itemName;
+      const cust = getCurrentCustomer();
+      $("itemCopy").textContent = current.onStand ? "On the feature stand and ready for tryout." : "Pulled from inventory. Place it on the feature stand.";
+      $("customerTarget").textContent = cust ? `Target: ${cust.name}, waiting ${cust.label}, ${Math.ceil(cust.waitLeft)}s left.` : "Target: best available waiting customer.";
+    }else{
+      $("itemIcon").textContent = "🎸";
+      $("itemTitle").textContent = "No item selected";
+      $("itemCopy").textContent = "Pull inventory from the back room, then put the instrument on the feature stand.";
+      $("customerTarget").textContent = "Target: no customer assigned yet.";
+    }
+    $("phasePill").textContent = state.phase;
+    $("getInventoryBtn").disabled = state.phase !== "inventory";
+    $("placeStandBtn").disabled = state.phase !== "stand";
+    $("tryBtn").disabled = state.phase !== "tryout";
+    $("saleBtn").disabled = state.phase !== "sale";
+    $("tryFill").style.width = state.tryProgress + "%";
+    $("tryTitle").textContent = state.phase === "tryout" ? "Tryout in progress" : state.phase === "sale" ? "Ready to sell" : "Tryout meter";
+    $("trySubtitle").textContent = state.phase === "tryout" ? "Tap Let Customer Try until the meter fills." : state.phase === "sale" ? "Customer is convinced. Close the sale." : "Place an instrument on the stand to begin.";
+    const activeVerb = state.phase === "inventory" ? "Get inventory for a waiting shopper." : state.phase === "stand" ? "Place the instrument on the center stand." : state.phase === "tryout" ? "Let the matched customer try it out." : "Make the sale and collect prestige.";
+    $("hintText").textContent = activeVerb + " Customers wait at random spots with random timers.";
+  }
+
+  function updateUpgradeUI(){
+    const div = $("upgradeGrid");
+    const rows = [];
+    rows.push(`<button class="actionBtn" id="restockBtn"><div class="actionMain"><div class="actionTitle">📦 Restock open lines</div><div class="actionSub">${unlockedLines().map(l => `${l.emoji} ${l.stock}`).join(" · ")}</div></div><div class="cost">${money(Math.max(60,75+unlockedLines().length*35-state.staff*10))}</div></button>`);
+    Object.values(lines).forEach(l => {
+      if(!l.unlocked){
+        rows.push(`<button class="actionBtn" data-line="${l.key}"><div class="actionMain"><div class="actionTitle">🔓 Open ${l.label}</div><div class="actionSub">New product line and new shopper wants.</div></div><div class="cost">${money(l.cost)}</div></button>`);
+      }else{
+        rows.push(`<button class="actionBtn good" disabled><div class="actionMain"><div class="actionTitle">${l.emoji} ${l.label}</div><div class="actionSub">Product line open · stock ${l.stock}</div></div><div class="cost">Open</div></button>`);
+      }
+    });
+    rows.push(`<button class="actionBtn" id="hireBtn"><div class="actionMain"><div class="actionTitle">👷 Hire staff</div><div class="actionSub">Automates restock support and speeds tryouts. Current: ${state.staff}</div></div><div class="cost">${money(360+state.staff*310)}</div></button>`);
+    rows.push(`<button class="actionBtn" id="expandBtn"><div class="actionMain"><div class="actionTitle">🏬 Expand space</div><div class="actionSub">More customer capacity and more waiting spread.</div></div><div class="cost">${money(520+state.expansion*650)}</div></button>`);
+    rows.push(`<button class="actionBtn" id="decorBtn"><div class="actionMain"><div class="actionTitle">⭐ Prestige decor</div><div class="actionSub">Move toward higher-end customer segments.</div></div><div class="cost">${money(420+state.segmentLevel*280)}</div></button>`);
+    div.innerHTML = rows.join("");
+    $("restockBtn").onclick = restockAll;
+    $("hireBtn").onclick = hireStaff;
+    $("expandBtn").onclick = expandSpace;
+    $("decorBtn").onclick = addPrestigeBoost;
+    div.querySelectorAll("[data-line]").forEach(btn => btn.onclick = () => unlockLine(btn.dataset.line));
+  }
+
+  function updateStatsUI(){
+    $("cashText").textContent = money(state.cash);
+    $("prestigeText").textContent = String(Math.round(state.prestige));
+    $("segmentText").textContent = state.segment;
+    $("segmentPill").textContent = currentSegment().tag;
+    $("customerCount").textContent = state.customers.length + "/" + state.capacity;
+    $("dayText").textContent = String(state.day);
+    $("cashFill").style.width = clamp(state.cash/2200*100,4,100) + "%";
+    $("prestigeFill").style.width = clamp(state.prestige/420*100,4,100) + "%";
+    $("customerFill").style.width = clamp(state.customers.length/state.capacity*100,0,100) + "%";
+    $("dayFill").style.width = clamp(state.day/14*100,0,100) + "%";
+    $("waitPill").textContent = "60-110s";
+  }
+
+  let uiDirtyEvery = 0;
+  function renderUI(dt){
+    uiDirtyEvery -= dt;
+    updateStatsUI();
+    updateInventoryUI();
+    updateLoopUI();
+    if(uiDirtyEvery <= 0){
+      updateCustomerUI();
+      updateUpgradeUI();
+      uiDirtyEvery = .4;
+    }
+  }
+
+  function drawRound(x,y,w,h,r,fill,stroke,line=1){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if(stroke){ ctx.strokeStyle=stroke; ctx.lineWidth=line; ctx.stroke(); }
+  }
+  function text(t,x,y,size=14,color="#fff",align="left",weight="800"){
+    ctx.font = `${weight} ${size}px -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,system-ui,sans-serif`;
+    ctx.fillStyle=color; ctx.textAlign=align; ctx.textBaseline="alphabetic"; ctx.fillText(t,x,y);
+  }
+
+  function drawStore(){
+    ctx.clearRect(0,0,W,H);
+    const wall = ctx.createLinearGradient(0,0,0,H);
+    wall.addColorStop(0,"#362113");
+    wall.addColorStop(.48,"#22170f");
+    wall.addColorStop(1,"#15110d");
+    ctx.fillStyle = wall;
+    ctx.fillRect(0,0,W,H);
+
+    // wall and ceiling
+    ctx.fillStyle = "#27180e";
+    ctx.fillRect(0,0,W,104);
+    ctx.fillStyle = "rgba(255,205,126,.08)";
+    ctx.fillRect(0,104,W,8);
+    text("PAWN & PICK", W/2-44, 68, 40, "#ffd36a", "center", "1000");
+    text("GUITARS", W/2+88, 69, 20, "#ffe2a6", "center", "1000");
+    drawRound(928,22,128,64,12,"rgba(75,170,84,.24)","rgba(120,255,146,.5)",2);
+    text("CASH",992,52,24,"#b8ffbf","center","1000");
+    text("LOANS",992,78,24,"#b8ffbf","center","1000");
+
+    // floor in perspective
+    const floorGrad = ctx.createLinearGradient(0,120,0,H);
+    floorGrad.addColorStop(0,"#4e2e1d");
+    floorGrad.addColorStop(.5,"#3b2518");
+    floorGrad.addColorStop(1,"#22150f");
+    ctx.fillStyle = floorGrad;
+    ctx.fillRect(0,112,W,H-112);
+
+    ctx.strokeStyle = "rgba(255,221,168,.08)";
+    ctx.lineWidth=2;
+    for(let y=150;y<H;y+=54){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y+10); ctx.stroke(); }
+    for(let x=-30;x<W+60;x+=78){ ctx.beginPath(); ctx.moveTo(x,112); ctx.lineTo(x+95,H); ctx.stroke(); }
+
+    // window and counter areas
+    drawRound(34,128,212,330,22,"rgba(12,22,24,.5)","rgba(255,255,255,.1)",2);
+    ctx.fillStyle = "rgba(111,214,255,.11)";
+    ctx.fillRect(54,150,70,280);
+    ctx.fillRect(140,150,70,280);
+    text("OPEN",96,405,22,"#ffb7a2","center","1000");
+    drawRound(260,142,268,102,20,"#6b3f20","#b98148",2);
+    text("TRADE-IN COUNTER",394,200,17,"#ffe4b0","center","1000");
+    text("📦",308,204,32,"#fff","center","800");
+    drawRound(260,254,268,72,16,"#342016","rgba(255,255,255,.12)",1);
+    text("Back-room inventory",394,298,14,"#d9c0a0","center","900");
+
+    // wall racks
+    const rackY = 122;
+    for(let i=0;i<8;i++){
+      const x = 574 + i*74;
+      ctx.strokeStyle = "rgba(255,211,106,.35)";
+      ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(x,rackY+6); ctx.lineTo(x,rackY+96); ctx.stroke();
+      text(i%3===0?"🎸":i%3===1?"🪕":"🎸", x, rackY+82, 42, "#fff", "center", "800");
+    }
+    drawRound(550,214,600,46,14,"rgba(0,0,0,.2)","rgba(255,255,255,.08)",1);
+    text("wall inventory unlocks as product lines open",850,244,14,"#d7c2a8","center","800");
+
+    // central rug and stand
+    drawRound(516,326,266,142,30,"#6b2e21","rgba(255,211,106,.2)",3);
+    drawRound(548,352,202,88,20,"rgba(255,211,106,.08)","rgba(255,255,255,.12)",1);
+    drawRound(612,280,76,122,28,"rgba(5,5,6,.34)","rgba(255,255,255,.12)",2);
+    text("FEATURE",650,316,12,"#ffe2a6","center","1000");
+    text("STAND",650,333,12,"#ffe2a6","center","1000");
+    if(state.current){
+      const l = lines[state.current.line];
+      text(l.emoji,650,386,58,"#fff","center","900");
+      if(state.phase === "tryout" || state.phase === "sale"){
+        for(let i=0;i<5;i++){
+          const a = performance.now()/550 + i;
+          text("♪", 710 + Math.sin(a)*40 + i*9, 335 + Math.cos(a*.8)*24, 22, i%2 ? "#79f2a7" : "#ffd36a", "center","900");
+        }
+      }
+    }else{
+      text("🎸",650,386,42,"rgba(255,255,255,.28)","center","900");
+    }
+
+    // sale desk
+    drawRound(870,282,214,132,24,"#774721","#bd7b3c",2);
+    text("SALE DESK",977,320,18,"#ffe6b5","center","1000");
+    text("💳",930,370,30,"#fff","center","800");
+    text("⭐",1002,370,30,"#fff","center","800");
+
+    // benches and corners
+    drawRound(290,470,240,78,20,"#57351f","#98683b",2);
+    text("AMP BENCHES",410,516,16,"#ffdfad","center","1000");
+    text("🔊  🔊  🎚️",410,493,25,"#fff","center","800");
+    drawRound(870,496,246,92,22,"#3a2a1b","#8b6842",2);
+    text("USED RECORDS & CASES",993,547,16,"#ffdfad","center","1000");
+    text("💿  📀  🎛️  🎒",993,526,23,"#fff","center","800");
+    drawRound(1122,342,94,224,18,"#2e231a","rgba(255,255,255,.1)",2);
+    text("LAMP",1169,520,13,"#ffe6b5","center","1000");
+    text("🪕",1169,422,36,"#fff","center","800");
+    text("🎸",1169,478,36,"#fff","center","800");
+
+    // open product line badges
+    let bx = 570;
+    Object.values(lines).forEach(l => {
+      if(l.unlocked){
+        drawRound(bx,90,72,26,12,"rgba(255,255,255,.08)","rgba(255,255,255,.12)",1);
+        text(l.emoji + " " + l.stock,bx+36,108,13,"#fff4d3","center","1000");
+        bx += 78;
+      }
+    });
+
+    // Staff helper
+    if(state.staff > 0){
+      const n = state.staff;
+      for(let i=0;i<n;i++){
+        const x = 334 + Math.sin(performance.now()/700+i)*20 + i*24;
+        const y = 365 + Math.cos(performance.now()/850+i)*18;
+        drawPerson(x,y,"👷","#79f2a7","STAFF");
+      }
+    }
+
+    // customers
+    state.customers.forEach(c => drawCustomer(c));
+
+    // current customer moving to stand
+    const cust = getCurrentCustomer();
+    if(cust && (cust.status === "trying" || cust.status === "ready" || cust.status === "walking")){
+      const t = state.phase === "sale" ? .95 : clamp(state.tryProgress/100,0,1);
+      const x = cust.x + (738 - cust.x)*(.35 + t*.45);
+      const y = cust.y + (388 - cust.y)*(.35 + t*.45);
+      drawPerson(x,y,cust.avatar,"#ffd36a",state.phase === "sale" ? "BUY" : "TRY");
+    }
+
+    // effects
+    state.effects.forEach(e => {
+      ctx.globalAlpha = clamp(e.life/e.max,0,1);
+      text(e.text,e.x,e.y,22,e.color,"center","1000");
+      ctx.globalAlpha = 1;
+    });
+  }
+
+  function drawPerson(x,y,emoji,accent,label){
+    ctx.save();
+    ctx.shadowColor="rgba(0,0,0,.28)";
+    ctx.shadowBlur=14;
+    drawRound(x-22,y-6,44,44,17,"rgba(0,0,0,.24)",accent,2);
+    ctx.shadowBlur=0;
+    text(emoji,x,y+27,30,"#fff","center","900");
+    drawRound(x-28,y-34,56,22,11,"rgba(10,11,13,.66)","rgba(255,255,255,.12)",1);
+    text(label,x,y-18,10,"#fff2d3","center","1000");
+    ctx.restore();
+  }
+
+  function drawCustomer(c){
+    const bob = Math.sin(performance.now()/550 + c.bubble*6) * 2.5;
+    const l = lines[c.wants];
+    const active = state.current && state.current.targetId === c.id;
+    const color = active ? "#ffd36a" : (c.waitLeft < 18 ? "#ff786f" : "#6fd6ff");
+    drawPerson(c.x,c.y+bob,c.avatar,color,Math.ceil(c.waitLeft)+"s");
+    drawRound(c.x-38,c.y-68+bob,76,36,14,"rgba(10,11,13,.78)","rgba(255,255,255,.13)",1);
+    text(l.emoji,c.x-18,c.y-44+bob,21,"#fff","center","900");
+    text(money(c.offer),c.x+14,c.y-46+bob,13,"#ffd36a","center","1000");
+    if(c.status === "matched" || active){
+      ctx.save();
+      ctx.strokeStyle = "rgba(255,211,106,.5)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5,6]);
+      ctx.beginPath();
+      ctx.moveTo(c.x,c.y);
+      ctx.lineTo(650,386);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  function tick(now){
+    const dt = Math.min(.05,(now-state.last)/1000);
+    state.last = now;
+
+    if(state.toastTimer > 0){
+      state.toastTimer -= dt;
+      if(state.toastTimer <= 0) $("toast").style.display = "none";
+    }
+
+    state.spawnTimer -= dt;
+    if(state.spawnTimer <= 0){
+      ensureCustomers();
+      if(state.customers.length < state.capacity && Math.random() < .45) spawnCustomer();
+      state.spawnTimer = rand(5.5,10.5);
+    }
+
+    state.customers.forEach(c => {
+      c.waitLeft -= dt * (c.status === "trying" || c.status === "ready" ? .15 : 1);
+      c.walkT += dt;
+    });
+    const leaving = state.customers.filter(c => c.waitLeft <= 0);
+    if(leaving.length){
+      leaving.forEach(c => popText("LEFT", c.x, c.y-70, "#ff786f"));
+      state.customers = state.customers.filter(c => c.waitLeft > 0);
+      if(state.current && leaving.some(c => c.id === state.current.targetId)){
+        state.current.targetId = null;
+        state.phase = state.current.onStand ? "tryout" : state.phase;
+        state.tryProgress = Math.max(0,state.tryProgress-30);
+        toast("A matched customer left. Pick another waiting customer or continue the tryout.", "bad");
+      }
+    }
+
+    if(state.staff > 0){
+      state.staffPulse += dt;
+      if(state.staffPulse >= 18){
+        state.staffPulse = 0;
+        const l = choice(unlockedLines());
+        l.stock += 1;
+        popText("+stock", 340, 310, "#79f2a7");
+      }
+    }
+
+    state.effects.forEach(e => { e.life -= dt; e.y += e.vy*dt; });
+    state.effects = state.effects.filter(e => e.life > 0);
+
+    renderUI(dt);
+    drawStore();
+    requestAnimationFrame(tick);
+  }
+
+  $("getInventoryBtn").onclick = getInventory;
+  $("placeStandBtn").onclick = placeStand;
+  $("tryBtn").onclick = letTry;
+  $("saleBtn").onclick = makeSale;
+
+  // Canvas click convenience: click feature stand to place/try/sell; click back counter to get inventory.
+  canvas.addEventListener("click", (e) => {
+    const r = canvas.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width * W;
+    const y = (e.clientY - r.top) / r.height * H;
+    if(x < 530 && y < 330) getInventory();
+    else if(x > 520 && x < 790 && y > 260 && y < 480){
+      if(state.phase === "stand") placeStand();
+      else if(state.phase === "tryout") letTry();
+      else if(state.phase === "sale") makeSale();
+    }else{
+      const clicked = state.customers.find(c => Math.hypot(c.x-x,c.y-y) < 55);
+      if(clicked && state.current){
+        state.current.targetId = clicked.id;
+        clicked.status = state.phase === "tryout" ? "trying" : "matched";
+        toast(clicked.name + " selected as the tryout customer.", "good");
+      }
+    }
+  });
+
+  // Start with deliberately varied random waits so the new behavior is obvious.
+  for(let i=0;i<4;i++) spawnCustomer(true);
+  state.customers[0].waitLeft = state.customers[0].waitMax = 100;
+  state.customers[1].waitLeft = state.customers[1].waitMax = 60;
+  ensureCustomers();
+  updateStatsUI();
+  updateInventoryUI();
+  updateLoopUI();
+  updateCustomerUI();
+  updateUpgradeUI();
+  drawStore();
+  requestAnimationFrame(tick);
 })();
 </script>
 </body>
